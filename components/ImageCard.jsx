@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import VideoPlayer from './MediaViewer/VideoPlayer'
 import AudioPlayer from './MediaViewer/AudioPlayer'
 
@@ -7,9 +7,8 @@ const ImageCard = ({ srcUrl, nft, footer, children }) => {
   const [type, setType] = useState('')
 
   useEffect(() => {
-    if (!nft?.media?.mimeType) return
-    const typeArray = nft?.media?.mimeType.split('/')
-    // console.log("TYPE", typeArray[0])
+    if (!nft?.mimeType) return
+    const typeArray = nft?.mimeType.split('/')
     setType(typeArray[0])
   }, [])
 
@@ -24,31 +23,29 @@ const ImageCard = ({ srcUrl, nft, footer, children }) => {
           className={'flex flex-col w-full mx-auto space-y-3'}
         >
           <div className={'rounded-t-2xl overflow-hidden h-96 bg-gray-900'}>
-            {/* {type && <iframe className={'w-full h-96 '} src={nft.animation_url}></iframe>} */}
 
             {type === 'image' && (
-              <img src={nft.image} className={'w-full'} />
+              <img src={nft.mediaUri} className={'w-full'} />
             )}
             {type === 'video' && (
-              <VideoPlayer fileUrl={nft.animation_url} controls={false} />
+              <VideoPlayer fileUrl={nft.mediaUri} controls={false} />
             )}
             {type === 'audio' && (
-              <AudioPlayer fileUrl={nft.animation_url} />
+              <AudioPlayer fileUrl={nft.mediaUri} />
             )}
 
-            {(type === 'model' || type === '' || nft?.media?.mimeType === 'application/octet-stream') && (
+            {(type === 'model' || type === '' || nft?.mimeType === 'application/octet-stream') && (
               <model-viewer
                 autoplay
                 style={{ width: '100%', height: '100%' }}
                 id={nft?.tokenId}
-                alt={nft?.name + nft?.tokenId}
-                src={nft?.animation_url}
+                alt={nft?.name + nft?.id}
+                src={nft?.mediaUri}
                 auto-rotate
                 camera-controls
                 ar
                 ar-modes="webxr scene-viewer quick-look"
                 ar-scale="auto"
-              // ios-src={}
               />
             )}
           </div>

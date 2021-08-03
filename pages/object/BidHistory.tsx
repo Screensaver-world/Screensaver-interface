@@ -3,6 +3,7 @@ import AccountId from '../../components/AccountId'
 import { gql, useQuery } from '@apollo/client'
 import { useState, useEffect } from 'react'
 import moment from 'moment'
+import { Bid } from '../../types'
 
 var utils = require('ethers').utils
 
@@ -25,13 +26,6 @@ const BID_QUERY = gql`
 `
 interface IProps {
   tokenId: string
-}
-
-type Bid = {
-  bidder: string
-  timestamp: string
-  amount: number
-  accepted: boolean
 }
 
 const BidHistory = ({ tokenId }) => {

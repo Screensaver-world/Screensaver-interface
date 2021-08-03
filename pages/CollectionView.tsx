@@ -8,6 +8,7 @@ import { GALLERY_ABI } from '../constants/gallery'
 import { getNetworkLibrary } from '../connectors'
 import NFT from '../types'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
+import AccountId from '../components/AccountId'
 import ReactPaginate from 'react-paginate-next'
 import { gql, useLazyQuery } from '@apollo/client'
 import { db } from '../config/firebase'
@@ -19,54 +20,84 @@ interface IProps {
 }
 
 const GALLERY_QUERY = gql`
-  query Gallery($ids: [Int]) {
-    artworks(where: {id_in: $ids, burned: false}) {
+  query HomePage($id: String) {
+    account(id: $id) {
       id
-      mimeType
-      tokenId
-      tagsString
-      currentBid {
+      address
+      isWhitelisted
+      created {
         id
-        bidder {
+        mimeType
+        tokenId
+        tagsString
+        currentBid {
+          id
+          bidder {
+            id
+          }
+          amount
+          accepted
+          canceled
+          timestamp
+        }
+        description
+        name
+        mediaUri
+        forSale
+        creator {
           id
         }
-        amount
-        accepted
-        canceled
-        timestamp
+        owner {
+          id
+        }
       }
-      description
-      name
-      mediaUri
-      forSale
-      creator {
+      items {
         id
-      }
-      owner {
-        id
+        mimeType
+        tokenId
+        tagsString
+        currentBid {
+          id
+          bidder {
+            id
+          }
+          amount
+          accepted
+          canceled
+          timestamp
+        }
+        description
+        name
+        mediaUri
+        forSale
+        creator {
+          id
+        }
+        owner {
+          id
+        }
       }
     }
   }
 `
-const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
+const CollectionView: React.VFC<IProps> = ({ created, owned, admin }) => {
   const [nfts, setNfts] = useState<NFT[]>([])
-  const [ids, setIds] = useState<number[] | undefined>()
   const router = useRouter()
   const { account, page } = router.query
   const [loadingState, setLoadingState] = useState<boolean>(true)
   const [count] = useState<number>(12)
-  const [pageCount, setPageCount] = useState< number | null>(null)
+  const [pageCount, setPageCount] = useState<number | null>(null)
 
-  const [loadGallery, { called, error, loading, data }] = useLazyQuery(
+  const [loadCollection, { called, error, loading, data }] = useLazyQuery(
     GALLERY_QUERY,
     {
-      variables: { ids: ids },
+      variables: { id: account?.toString()?.toLowerCase() },
     },
   )
 
   // check reports for
   useEffect(() => {
-    if (!admin) return;
+    if (!admin) return
     const unsubscribe = db
       .collection('reported')
       .onSnapshot((reportsSnapshot) => {
@@ -101,16 +132,19 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
   }
 
   useEffect(() => {
-    if (!!admin || !page) return
-    getPageCount()
-  }, [page])
+    if ((!created && !owned && !admin) || !account || !data) return
+    getCollectionIds(data)
+  }, [data])
 
   useEffect(() => {
-    if (!data) return
-    const artworks = [...data.artworks]
-    const sortedArtworks = artworks.sort((a, b) => b.tokenId - a.tokenId)
-    setNfts(sortedArtworks)
-  }, [data])
+    if ((!created && !owned && !admin) || !account) return
+    loadCollection()
+  }, [account])
+
+  useEffect(() => {
+    if (!!created || !!owned || !!admin || !page) return
+    getPageCount()
+  }, [page])
 
   async function getPageCount() {
     const contract = new ethers.Contract(
@@ -119,51 +153,67 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
       getNetworkLibrary(),
     )
 
+    var supply = await contract.totalSupply()
+
+    var total_supply = supply.toNumber()
+
     var minted = await contract.totalMinted()
+
     var total_minted = minted.toNumber()
+
     var page_count = Math.ceil(total_minted / count)
 
     loadTokens(total_minted)
     setPageCount(page_count === 0 ? 1 : page_count)
-
   }
 
-  useEffect(() => {
-    if (!ids) return;
-    console.log(ids)
-    loadGallery()
-  }, [ids])
+  async function getCollectionIds(data) {
+    let ids
 
-  useEffect(() => {
-    console.log("DATA", data)
-  }, [data])
+    if (created) {
+      ids = data.account?.created?.map((i) => i.id) ?? []
+    }
+
+    if (owned) {
+      ids = data.account?.items?.map((i) => i.id) ?? []
+    }
+
+    let filteredIds = ids.filter((v, i) => ids.indexOf(v) === i)
+    let ascending = filteredIds.sort(function (a, b) {
+      return a - b
+    })
+
+    await getNFTs(ascending)
+
+    setLoadingState(false)
+  }
 
   async function loadTokens(total_minted) {
-
     setLoadingState(true)
 
     let pageNumber = 1
-    
+
     if (!!page) {
       pageNumber = parseInt(page.toString())
     }
 
-    let minus =  pageNumber * count
+    let minus = pageNumber * count
     let lowRange = total_minted - minus
 
-    if (lowRange > total_minted ) {
+    if (lowRange > total_minted) {
       lowRange = 0
     }
 
     const result = new Array(count).fill(true).map((e, i) => i + 1 + lowRange)
 
     const filteredResults = result.filter((i) => i > 0)
-    setIds(filteredResults)
-    
+
+    await getNFTs(filteredResults)
+
+    setLoadingState(false)
   }
 
   const getNFTs = async (range: number[]) => {
-
     const contract = new ethers.Contract(
       process.env.NEXT_PUBLIC_CONTRACT_ID,
       GALLERY_ABI,
@@ -173,9 +223,9 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
     var allMetadata = await Promise.all(
       range.map(async (id) => {
         try {
-          console.log("HERE")
+          console.log('HERE')
           var uri = await contract.tokenURI(id)
-          console.log("URI", uri)
+          console.log('URI', uri)
           if (uri.includes(undefined)) return null
           var metadata = await axios.get(uri)
           metadata.data.tokenId = id
@@ -189,7 +239,7 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
 
     const filteredMeta = allMetadata.filter((i) => i !== null)
 
-    console.log("FILTERED METADATA", filteredMeta)
+    console.log('FILTERED METADATA', filteredMeta)
     setNfts(filteredMeta.reverse())
   }
 
@@ -201,7 +251,7 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
     )
   }
 
-  if (loading || !nfts)
+  if (loadingState || loading)
     return (
       <Layout>
         <div className={'md:mt-12 pb-8 max-w-xl mx-auto'}>loading...</div>
@@ -209,17 +259,44 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
     )
 
   return (
+    <>
+      {created && (
+        <div
+          className={
+            'flex items-center justify-center text-2xl font-light h-16'
+          }
+        >
+          CREATED&nbsp; <AccountId address={account.toString()} />
+        </div>
+      )}
+      {owned && (
+        <div
+          className={
+            'flex items-center justify-center text-2xl font-light h-16'
+          }
+        >
+          OWNED&nbsp; <AccountId address={account.toString()} />
+        </div>
+      )}
+
+      {nfts.length === 0 && (
+        <div className="flex items-center justify-center text-md font-light h-12">
+          This address has no {created ? 'created' : owned ? 'owned' : ''}{' '}
+          objects.
+        </div>
+      )}
+
       <div className={'flex flex-col space-y-4'}>
         <div
           className={'grid gap-6 md:grid-cols-2 lg:grid-cols-3 mx-auto mt-8'}
         >
-          {(!loading) ? (
+          {!loadingState && !loading ? (
             nfts.map((item, key) => (
               <div key={key}>
                 <NFTItemCard
                   nft={item}
                   title={item?.name}
-                  coverImageSrc={item?.mediaUri}
+                  coverImageSrc={item?.image}
                   creator={item?.creator.id}
                   endDateTime={new Date('1/1/count00')}
                   amountCollected={count}
@@ -262,7 +339,7 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
               }
               activeClassName={'active'}
             />
-            {(!!page && parseInt(page.toString()) < pageCount) && (
+            {!!page && parseInt(page.toString()) < pageCount && (
               <button
                 type="button"
                 onClick={next}
@@ -275,7 +352,8 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
           </div>
         )}
       </div>
+    </>
   )
 }
 
-export default ExploreView
+export default CollectionView

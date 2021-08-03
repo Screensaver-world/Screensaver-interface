@@ -1,4 +1,4 @@
-import NFT from '../../types'
+import NFT, {Bid} from '../../types'
 
 export interface IProps {
   title?: string
@@ -10,4 +10,5 @@ export interface IProps {
   nft?: NFT
   cardLoading?: boolean
   key?: number
+  currentBid?: Bid 
 }
