@@ -1,15 +1,7 @@
-// TODO: Cleanup and foramlize states
-// TODO: Make Overlay take up full height of screen
-// TODO: Properly handle login button placement code (current code is smelly)
-// TODO: Properly color search box
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { IProps } from '../types'
-import SearchInput from '../SearchInput'
-import NavigationLinks from './NavigationLinks'
 import { MenuIcon } from '@heroicons/react/outline'
-import { XIcon } from '@heroicons/react/outline'
-import { SearchIcon } from '@heroicons/react/outline'
 import ConnectButton from '../../ConnectButton'
 import Banner from '../../Banner'
 import { useWeb3React } from '@web3-react/core'
@@ -20,14 +12,9 @@ import logoImage from './SCREENSAVER.png'
 import { ethers } from 'ethers'
 import { ERC20_ABI } from '../../../constants/abis/erc20'
 import { auth } from '../../../config/firebase'
+import { useRouter } from 'next/router'
 
 var utils = require('ethers').utils
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
-type State = 'initial' | 'search' | 'menu'
 
 const tokenAddress = '0x580127f3F17516A945785b9485048ad22f036142'
 
@@ -42,18 +29,25 @@ const addToMetamask = async (provider: any): Promise<void> => {
 }
 
 const MobileNavbar: React.FC<IProps> = () => {
-  const [state, setState] = useState<State>('initial')
   const [tokenBalance, setTokenBalance] = useState<number>(0)
-  const { account, chainId, library, connector } = useWeb3React()
-  const [isSignedIn, setIsSignedIn] = useState(false) // Local signed-in state.
+  const { account, library, connector } = useWeb3React()
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  const router = useRouter()
+  const [showBanner, setShowBanner] = useState(false)
 
   useEffect(() => {
     const unregisterAuthObserver = auth().onAuthStateChanged((user) => {
       setIsSignedIn(!!user)
-      console.log('SIGN UP', user)
     })
     return () => unregisterAuthObserver()
   }, [])
+
+  useEffect(() => {
+    console.log("ROUTER", router.pathname)
+    if (router.pathname.includes('gallery')) {
+      setShowBanner(true)
+    }
+  }, [router])
 
   async function balanceOf() {
     const contract = new ethers.Contract(
@@ -73,8 +67,6 @@ const MobileNavbar: React.FC<IProps> = () => {
   }, [account])
 
   const track = async () => {
-    // track is only called from a component that is only rendered once an
-    // account is active, so we know connetor will be defined at that point
     const provider = await connector.getProvider()
     return addToMetamask(provider)
   }
@@ -85,7 +77,7 @@ const MobileNavbar: React.FC<IProps> = () => {
         'fixed z-10 bg-black right-0 top-0 w-full border-b-2 border-gray-800'
       }
     >
-      <div className={'mx-4'}>
+      <div className={'mx-1 md:mx-4'}>
         <div
           className={
             'flex justify-between mx-auto w-11/12 items-center h-16 z-10'
@@ -108,14 +100,14 @@ const MobileNavbar: React.FC<IProps> = () => {
           <input
             placeholder={'Search art titles...'}
             className={
-              'input rounded-md border cursor-pointer border-gray-800 w-0 md:w-64 text-gray-400 font-bold text-base p-0 md:h-8 md:px-6 md:mx-10'
+              'hidden lg:block input rounded-md border cursor-pointer border-gray-800 w-0 md:w-64 text-gray-400 font-bold text-base p-0 md:h-8 md:px-6 md:mx-10'
             }
           />
           </Link>
           </div>
           <div className={'flex space-x-3 items-center'}>
             {connector && (
-              <div className="px-6 w-full py-2 border border-red-300 text-sm shadow-lg font-medium rounded-sm shadow-sm text-red-300 bg-gray-900 focus:outline-none ">
+              <div className="hidden lg:block px-6 w-full py-2 border border-red-300 text-sm shadow-lg font-medium rounded-sm text-red-300 bg-gray-900 focus:outline-none ">
                 {tokenBalance.toFixed(3)}{' '}
                 <span
                   onClick={() => track()}
@@ -133,11 +125,7 @@ const MobileNavbar: React.FC<IProps> = () => {
                   <div>
                     <Menu.Button className="bg-gray-800 flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">Open user menu</span>
-                      {/* <img
-                            className="h-8 w-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                          /> */}
+        
                       <MenuIcon
                         className={
                           ' text-red-300 h-8 w-8 p-2 border border-red-300 text-md font-medium rounded-sm shadow-lg hover:shadow-sm text-red-300 bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
@@ -258,7 +246,7 @@ const MobileNavbar: React.FC<IProps> = () => {
         </div>
       </div>
 
-      <Banner />
+      { showBanner && <Banner />}
     </div>
   )
 }

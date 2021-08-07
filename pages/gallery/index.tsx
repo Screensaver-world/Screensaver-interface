@@ -6,7 +6,7 @@ const GalleryPage: React.VFC = () => {
   
   return (
     <Layout>
-      <div className={'md:mt-12 pb-8 w-11/12 mx-auto'}>
+      <div className={'pb-8 w-full md:w-11/12 mx-auto'}>
         <ExploreView />
       </div>
     </Layout>

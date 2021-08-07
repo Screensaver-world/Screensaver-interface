@@ -209,12 +209,12 @@ export default function Mint() {
         <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
           <div>
             <div>
-              <h3 className="mt-4 max-w-3xl text-3xl text-white font-bold">
+              <h3 className="mt-10 max-w-3xl text-3xl text-white font-bold">
                 Mint
               </h3>
               <p className="mt-1 max-w-2xl text-md text-gray-100 font-medium">
-                Creators will receive 15% royalties on all secondary sales with
-                5% marketplace fees.
+                Creators will receive 15% royalties on all secondary sales within SSW and SSW takes a 
+                5% marketplace fees on sales.
               </p>
             </div>
 

@@ -58,7 +58,11 @@ const BidHistory = ({ tokenId }) => {
     }
   }, [data])
 
-  if (loading || !bidLogs) {
+  if (!bidLogs) {
+    return <></>
+  }
+
+  if (loading) {
     return <div>loading bid history...</div>
   }
 

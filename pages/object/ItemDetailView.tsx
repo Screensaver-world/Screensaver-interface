@@ -20,7 +20,7 @@ const ItemDetailView: React.VFC<IProps> = ({ metadata, hash }) => {
   return (
     <div className={'flex flex-col space-y-12'}>
       <div className={'flex flex-col space-y-8'}>
-        <div className={'space-y-3 mt-3'}>
+        <div className={'space-y-3'}>
           <ImageWithActions
             src={metadata.image}
             alt={metadata.name}

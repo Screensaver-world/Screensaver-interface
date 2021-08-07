@@ -12,7 +12,7 @@ export default function Banner() {
     <div className="relative bg-black w-full border-white">
     <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
       <div className=" sm:text-center sm:px-16 font-small text-white flex justify-center">
-          <a target='_blank' href='https://jam.screensaver.world' className="inline text-md">✨  SW community Art T🎨</a>
+          <a target='_blank' href='https://jam.screensaver.world' className="inline text-md">✨ Join the Flash Auction this Friday at 8PM EST 🎨</a>
       </div>
     </div>
   </div>

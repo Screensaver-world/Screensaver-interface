@@ -180,7 +180,7 @@ const ItemDetailPage: React.VFC = () => {
           <meta name="twitter:card" content="summary_large_image" />
         </Head>
 
-        <div className={'md:mt-12 pb-8 w-11/12 mx-auto'}>
+        <div className={'mt-12 pb-8 w-11/12 mx-auto'}>
           <div className={'md:p-3 max-w-xl mx-auto min-h-screen'}>
       
             <ItemDetailView
@@ -208,7 +208,7 @@ const ItemDetailPage: React.VFC = () => {
               </>
             )}
 
-            <BidHistory tokenId={tokenId} />
+            {!preview && <BidHistory tokenId={tokenId} />}
 
 
             {/* <div>METADATA URI: {!!metadata?.metadataUri && metadata.metadataUri.split('https://ipfs.io/ipfs/')[1]}</div>

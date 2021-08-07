@@ -3,14 +3,6 @@ import ActionButton from './ActionButton'
 import NFT from '../../types'
 import VideoPlayer from '../MediaViewer/VideoPlayer'
 import AudioPlayer from '../MediaViewer/AudioPlayer'
-import PdfViewer from '../MediaViewer/PdfViewer'
-
-// interface IProps {
-//   nft: NFT
-//   src: string
-//   alt?: string
-//   actions: typeof ActionButton[] // TODO: Fix this typing which is throwing errors
-// }
 
 const ImageWithActions = ({ src, nft, alt, actions }) => {
   const [type, setType] = useState('')
@@ -18,7 +10,6 @@ const ImageWithActions = ({ src, nft, alt, actions }) => {
   useEffect(() => {
     if (!nft?.media?.mimeType) return
     const typeArray = nft?.media?.mimeType.split('/')
-    console.log("TYPEm", typeArray[0])
     setType(typeArray[0])
   }, [nft])
 

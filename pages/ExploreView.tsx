@@ -211,7 +211,7 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
   return (
       <div className={'flex flex-col space-y-4'}>
         <div
-          className={'grid gap-6 md:grid-cols-2 lg:grid-cols-3 mx-auto mt-8'}
+          className={'grid gap-6 md:grid-cols-2 lg:grid-cols-3 mx-2 sm:mx-auto mt-48 md:mt-36'}
         >
           {(!loading) ? (
             nfts.map((item, key) => (
@@ -252,7 +252,7 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
               breakClassName={'break-me'}
               pageCount={pageCount}
               marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
+              pageRangeDisplayed={1}
               onPageChange={handlePageClick}
               containerClassName={
                 'flex w-full bg-red-400 justify-center items-center h-10'
@@ -262,6 +262,7 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
               }
               activeClassName={'active'}
             />
+
             {(!!page && parseInt(page.toString()) < pageCount) && (
               <button
                 type="button"

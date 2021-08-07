@@ -8,6 +8,7 @@ body {
   @apply bg-black;
   @apply text-white;
   @apply font-mono;
+  @apply w-full;
 }
 
 @layer base {
