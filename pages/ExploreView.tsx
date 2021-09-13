@@ -15,7 +15,7 @@ import { db } from '../config/firebase'
 import {
   useWindowWidth
 } from '@react-hook/window-size'
- 
+import { useGalleryContract } from '../hooks/useContract'
 
 interface IProps {
   created?: boolean
@@ -49,6 +49,7 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
   const [totalMinted, setMintedSupply] = useState(0)
   const width = useWindowWidth()
   const [isMobile, setIsMobile] = useState(true)
+  const galleryContract = useGalleryContract();
 
   // change pagination based on width
   useEffect(() => {
@@ -119,26 +120,12 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
   }, [page])
 
   async function getPageCount() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-
-    var supply = await contract.totalSupply()
-
+    var supply = await galleryContract.totalSupply()
     var total_supply = supply.toNumber()
-
-    var minted = await contract.totalMinted()
-
+    var minted = await galleryContract.totalMinted()
     var total_minted = minted.toNumber()
-
     var page_count = Math.ceil(total_minted / count)
-
-    console.log("PAGE COUNT", total_supply, total_minted, page_count)
-
     loadTokens(total_minted)
-
     setTotalSupply(total_supply)
     setMintedSupply(total_minted)
     setPageCount(page_count === 0 ? 1 : page_count)
@@ -202,17 +189,11 @@ const ExploreView: React.VFC<IProps> = ({ created, owned, admin }) => {
 
   const getNFTs = async (range: number[]) => {
 
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-
     var allMetadata = await Promise.all(
       range.map(async (id) => {
         try {
           console.log("HERE")
-          var uri = await contract.tokenURI(id)
+          var uri = await galleryContract.tokenURI(id)
           console.log("URI", uri)
           if (uri.includes(undefined)) return null
           var metadata = await axios.get(uri)

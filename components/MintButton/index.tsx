@@ -2,19 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 import Modal from '../Modal'
 import { useWeb3React } from '@web3-react/core'
-import { shortenAddress } from '../../utils'
 import { Web3Provider } from '@ethersproject/providers'
-import { useEffect } from 'react'
-import { POLYGON_MAINNET_PARAMS } from '../../constants'
-import { ethers } from 'ethers'
-import { GALLERY_ABI } from '../../constants/gallery'
-import classNames from 'classnames'
-import { Router, useRouter } from 'next/router'
-import { LibraryIcon } from '@heroicons/react/outline'
-import { BigNumber } from 'ethers'
-import { getNetworkLibrary } from '../../connectors'
-
-var utils = require('ethers').utils
+import { useRouter } from 'next/router'
+import {useGalleryContract} from '../../hooks/useContract'
 
 interface IProps {
   hash: string
@@ -25,79 +15,23 @@ const index: React.FC<IProps> = ({ hash }) => {
   const [initialSupply, setInitialSupply] = useState<number | null>(null)
   const [supply, setSupply] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
-
+  const galleryContract = useGalleryContract();
   const router = useRouter()
 
   const { chainId, account, library } = useWeb3React<Web3Provider>()
 
   async function createToken(uri: string) {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      library.getSigner(account),
-    )
-
     setLoading(true)
-
-    let tx = await contract.createToken(uri)
-
-    const receipt = await tx.wait();
-
+    let tx = await galleryContract.createToken(uri)
+    await tx.wait();
     goToNFT()
-
-
-    // console.log("MINTED RETURN VALUE", tx)
-
-    // let topic = ethers.utils.id('Transfer(address,address,uint256)')
-
-    // let filter = {
-    //   address: process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-    //   topics: [topic, null, ethers.utils.hexZeroPad(account, 32)],
-    // }
-
-    // getNetworkLibrary().on(filter, (result) => {
-    //   console.log('MINTAGE', result, tx.hash)
-    //   if (result.transactionHash === tx.hash) {
-    //     goToNFT()
-    //     getNetworkLibrary().off(filter, (offResult) => {
-    //       console.log('OFF', offResult)
-    //     })
-    //   }
-    // })
-
-    console.log('URI', uri)
   }
 
   async function goToNFT() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      library.getSigner(account),
-    )
-
-    var supply = await contract.totalMinted()
-
-    console.log("SUPPLY", supply)
-
+    var supply = await galleryContract.totalMinted()
     var parsedSupply = supply.toNumber()
-
     router.push(`/object/${parsedSupply}`)
   }
-
-  // useEffect(() => {
-  //   let topic = ethers.utils.id('Transfer(address,address,uint256)')
-
-  //   let filter = {
-  //     address: process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-  //     topics: [topic],
-  //   }
-
-  //   return () => {
-  //     getNetworkLibrary().off(filter, (offResult) => {
-  //       console.log('OFF', offResult)
-  //     })
-  //   }
-  // }, [])
 
   return (
     <>

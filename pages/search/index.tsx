@@ -9,6 +9,7 @@ import NFT from '../../types'
 import { gql, useLazyQuery } from '@apollo/client'
 import { db } from '../../config/firebase'
 import SearchBar from '../../components/SearchBar'
+import { useGalleryContract } from '../../hooks/useContract'
 
 interface IProps {
   created?: boolean
@@ -29,7 +30,7 @@ const SearchView: React.VFC<IProps> = ({ created, owned, admin }) => {
   const [loadingState, setLoadingState] = useState<boolean>(true)
   const [count] = useState<number>(12)
   const [searchInput, setSearchInput] = useState('')
-
+  const galleryContract = useGalleryContract();
   const [loadCollection, { called, error, loading, data }] = useLazyQuery(
     SEARCH_QUERY,
     {
@@ -84,17 +85,11 @@ const SearchView: React.VFC<IProps> = ({ created, owned, admin }) => {
 
   const getNFTs = async (range: number[]) => {
 
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-
     var allMetadata = await Promise.all(
       range.map(async (id) => {
         try {
           console.log("HERE")
-          var uri = await contract.tokenURI(id)
+          var uri = await galleryContract.tokenURI(id)
           console.log("URI", uri)
           if (uri.includes(undefined)) return null
           var metadata = await axios.get(uri)

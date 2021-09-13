@@ -1,15 +1,13 @@
 // TODO: setQuantity
-import React, { useState, useEffect } from 'react'
-import { storage } from '../config/firebase'
-import axios from 'axios'
+import React, { useState } from 'react'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
-import { GALLERY_ABI } from '../constants/gallery'
 import Modal from '../components/Modal'
 import classNames from 'classnames'
 import { useMaticBalance } from '../hooks/useMaticBalance'
-import { BigNumber } from 'ethers'
+import {useGalleryContract} from '../hooks/useContract'
+
 var utils = require('ethers').utils
 
 interface IProps {
@@ -17,59 +15,35 @@ interface IProps {
   sale: boolean
   tokenId: string
 }
+
 const SetBid: React.VFC<IProps> = ({ onUpdate, tokenId, sale = true }) => {
   const [value, setValue] = useState<string>()
   const {
     chainId,
-    account,
-    activate,
-    active,
-    deactivate,
-    library,
+    account
   } = useWeb3React<Web3Provider>()
   const [loading, setLoading] = useState<boolean>(false)
-  const [bidder, setBidder] = useState<string | undefined>()
-  const [ownerOf, setOwnerOf] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
   const maticBalance = useMaticBalance()
-  let transferTopic = ethers.utils.id('Transfer(address,address,uint256)')
+  const galleryContract = useGalleryContract();
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-    // contract call
-    console.log('VALUE', value)
   }
 
   const hasPlaceBidError =
     !sale && account && value && maticBalance < parseFloat(value)
 
-  // accept active bid
   async function createBid() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      library.getSigner(account),
-    )
-
-    const big = utils.parseEther(value)
-    console.log('VALUE AT CREATE BID CALL', value, big)
     let overrides = {
       // To convert Ether to Wei:
       value: utils.parseEther(value), // ether in this case MUST be a string
     }
-
-    // Pass in the overrides as the 3rd parameter to your 2-parameter function:
-
-    const tx = await contract.bid(tokenId.toString(), overrides)
-
+    const tx = await galleryContract.bid(tokenId.toString(), overrides)
     setLoading(true)
-
-    const receipt = await tx.wait()
-
-    // setTimeout(() => {
+    await tx.wait()
     onUpdate()
     setLoading(false)
-    // }, 10000)
   }
 
   return (

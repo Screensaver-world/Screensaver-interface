@@ -7,6 +7,7 @@ import Modal from '../components/Modal'
 import { getNetworkLibrary } from '../connectors'
 import SetBid from './SetBid'
 import AccountId from './AccountId'
+import {useGalleryContract} from '../hooks/useContract'
 
 var utils = require('ethers').utils
 
@@ -23,34 +24,19 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
   const [ownerOf, setOwnerOf] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
+  const galleryContract = useGalleryContract();
 
   // ownerOf
   async function checkOwnerOf() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-    var ownerOf = await contract.ownerOf(tokenId)
-
-    console.log('Owner of', ownerOf)
-
+    var ownerOf = await galleryContract.ownerOf(tokenId)
     if (ownerOf !== account) return
-
     setOwnerOf(true)
   }
 
   // get current bids
   async function currentBids() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
 
-    var currentBid = await contract.currentBidDetailsOfToken(tokenId)
-
-    console.log(currentBid)
+    var currentBid = await galleryContract.currentBidDetailsOfToken(tokenId)
 
     if (utils.formatEther(currentBid[0]) === '0.0') {
       setBid(undefined)
@@ -63,35 +49,18 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
 
   // accept active bid
   async function acceptBid() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      library.getSigner(account),
-    )
-    const tx = await contract.acceptBid(tokenId)
+    const tx = await galleryContract.acceptBid(tokenId)
     setLoading(true)
-
-    const receipt = await tx.wait()
-
-    // setTimeout(() => {
+    await tx.wait()
     currentBids()
     setLoading(false)
-    // }, 10000)
   }
 
   // cancel active bid
   async function cancelBid() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      library.getSigner(account),
-    )
-    const tx = await contract.cancelBid(tokenId)
-
+    const tx = await galleryContract.cancelBid(tokenId)
     setLoading(true)
-
-    const receipt = await tx.wait()
-
+    await tx.wait()
     currentBids()
     setLoading(false)
   }

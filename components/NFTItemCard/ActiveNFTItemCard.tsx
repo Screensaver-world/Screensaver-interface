@@ -2,15 +2,12 @@ import React from 'react'
 import ImageCard from '../ImageCard'
 import { IProps } from './types'
 import { useState, useEffect } from 'react'
-import { ethers } from 'ethers'
-import { GALLERY_ABI } from '../../constants/gallery'
-import { getNetworkLibrary } from '../../connectors'
 import AccountId from '../AccountId'
 import { gql, useLazyQuery } from '@apollo/client'
-import { createOperation } from '@apollo/client/link/utils'
 import axios from 'axios'
 import NFT from '../../types'
 import makeBlockie from 'ethereum-blockies-base64'
+import {useGalleryContract} from '../../hooks/useContract'
 
 var utils = require('ethers').utils
 
@@ -33,10 +30,10 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
   const [lastSale, setLastSale] = useState<number | undefined>()
   const [forSale, setForSale] = useState(false)
   const [safeNFT, setSafeNFT] = useState< NFT | undefined>()
-
   const [loadBids, { loading, error, data }] = useLazyQuery(BID_QUERY, {
     variables: { item: nft?.tokenId.toString() },
   })
+  const galleryContract = useGalleryContract();
 
   useEffect(() => {
     if (nft.broken || nft.mediaUri === null) {
@@ -48,14 +45,7 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
 
   async function getNFTFromContract() {
 
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-
-    var uri = await contract.tokenURI(nft.tokenId)
-    console.log("URI", uri)
+    var uri = await galleryContract.tokenURI(nft.tokenId)
     if (uri.includes(undefined)) return null
     var metadata = await axios.get(uri)
     var itemFromContract: NFT = {
@@ -102,14 +92,7 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
   // get current bids
   async function currentBids() {
     if (!nft?.tokenId) return
-
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-
-    var currentBid = await contract.currentBidDetailsOfToken(nft.tokenId)
+    var currentBid = await galleryContract.currentBidDetailsOfToken(nft.tokenId)
 
     if (utils.formatEther(currentBid[0]) === '0.0') {
       setCurrentBid(null)
@@ -119,15 +102,9 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
   }
 
   // get approved
-  async function getApproved() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-    var approvedAddress = await contract.getApproved(nft?.tokenId)
-
-    setForSale(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID_ARB)
+  async function getApproved() {    
+    var approvedAddress = await galleryContract.getApproved(nft?.tokenId)
+    setForSale(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID_ARBITRUM)
   }
 
   useEffect(() => {

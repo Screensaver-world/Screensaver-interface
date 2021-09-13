@@ -1,19 +1,12 @@
 // TODO: setQuantity
 import React, { useState, useEffect } from 'react'
-import { storage } from '../config/firebase'
-import axios from 'axios'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import { GALLERY_ABI } from '../constants/gallery'
 import Modal from './Modal'
-import classNames from 'classnames'
-import { injected } from '../connectors'
-import { useRouter } from 'next/router'
-import { shortenAddress } from '../utils'
-import { getNetworkLibrary } from '../connectors'
 import { useMaticBalance } from '../hooks/useMaticBalance'
-import { BigNumber } from 'ethers'
+import {useGalleryContract} from '../hooks/useContract'
 var utils = require('ethers').utils
 
 interface IProps {
@@ -38,6 +31,7 @@ const SetSalePrice: React.VFC<IProps> = ({
   const [loading, setLoading] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
   const maticBalance = useMaticBalance()
+  const galleryContract = useGalleryContract();
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
@@ -47,20 +41,10 @@ const SetSalePrice: React.VFC<IProps> = ({
 
   // accept active bid
   async function setSalePrice() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      library.getSigner(account),
-    )
-
     // Pass in the overrides as the 3rd parameter to your 2-parameter function:
-
-    const tx = await contract.setWeiSalePrice(tokenId.toString(), utils.parseEther(value))
-
+    const tx = await galleryContract.setWeiSalePrice(tokenId.toString(), utils.parseEther(value))
     setLoading(true)
-
-    const receipt = await tx.wait()
-
+    await tx.wait()
     onUpdate()
     setLoading(false)
   }

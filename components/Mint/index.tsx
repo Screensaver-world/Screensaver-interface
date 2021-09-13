@@ -7,9 +7,7 @@ import Modal from '../../components/Modal'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { parseTags } from '../../utils'
-import { ethers } from 'ethers'
-import { GALLERY_ABI } from '../../constants/gallery'
-import { getNetworkLibrary } from '../../connectors'
+import {useGalleryContract} from '../../hooks/useContract'
 import { Layout } from '../../components'
 
 var uri = 'https://us-central1-broccoli-df8cd.cloudfunctions.net/api/mint'
@@ -28,18 +26,12 @@ export default function Mint() {
   const [includeThumbnail, setIncludeThumbnail] = useState(false)
   const [whitelistedLoading, setWhitelistedLoading] = useState(true)
   const [thumbnailMedia, setThumbnailMedia] = useState<File>()
+  const galleryContract = useGalleryContract();
 
   // ownerOf
   async function checkIsWhitelisted() {
     setWhitelistedLoading(true)
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-    var whitelistStatus = await contract.isWhitelisted(account)
-
-    console.log('WHITELIST', whitelistStatus)
+    var whitelistStatus = await galleryContract.isWhitelisted(account)
     setIsWhitelisted(whitelistStatus)
     setWhitelistedLoading(false)
   }

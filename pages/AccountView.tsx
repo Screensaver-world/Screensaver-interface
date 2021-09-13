@@ -8,10 +8,8 @@ import Link from 'next/link'
 import AccountId from '../components/AccountId'
 import classNames from 'classnames'
 import makeBlockie from 'ethereum-blockies-base64'
-import { GALLERY_ABI } from '../constants/gallery'
-import { getNetworkLibrary } from '../connectors'
-import { ethers } from 'ethers'
 import useAccountData from '../hooks/useAccountData'
+import {useGalleryContract} from '../hooks/useContract'
 
 interface IProps {
   state: string
@@ -197,6 +195,7 @@ const AccountView: React.VFC<IProps> = ({ state }) => {
   const { account } = router.query
   const [accountLoading, accountData] = useAccountData({account: account.toString()});
   const [description, setDescription] = useState<string | undefined>(undefined);
+  const galleryContract = useGalleryContract();
 
   useEffect(() => {
       if (!accountData) return;
@@ -232,24 +231,12 @@ const AccountView: React.VFC<IProps> = ({ state }) => {
   }, [])
 
   async function getBalanceOf() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-
-    var balance = await contract.balanceOf(account)
+    var balance = await galleryContract.balanceOf(account)
     setBalanceOf(balance.toNumber())
   }
 
   async function getTotalSupply() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-
-    var supply = await contract.totalSupply()
+    var supply = await galleryContract.totalSupply()
     setTotalSupply(supply.toNumber())
 
   }

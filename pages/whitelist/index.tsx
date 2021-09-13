@@ -7,6 +7,7 @@ import { ethers } from 'ethers'
 import { GALLERY_ABI } from '../../constants/gallery'
 import { getNetworkLibrary } from '../../connectors'
 import { shortenAddress } from "../../utils";
+import { useGalleryContract } from '../../hooks/useContract'
 
 export default function Home() {
   const { account, library } = useWeb3React<Web3Provider>()
@@ -15,18 +16,11 @@ export default function Home() {
   const [whitelistingLoading, setWhitelistingLoading] = useState(false)
   const url = 'https://us-central1-broccoli-df8cd.cloudfunctions.net/api'
   const [isWhitelisted, setIsWhitelisted] = useState(true)
+  const galleryContract = useGalleryContract();
 
-  // ownerOf
+  // check is whitelisted
   async function checkIsWhitelisted() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-    var whitelistStatus = await contract.isWhitelisted(account)
-
-    console.log('whitelistStatus', whitelistStatus)
-
+    var whitelistStatus = await galleryContract.isWhitelisted(account)
     setIsWhitelisted(whitelistStatus)
     setLoading(false)
   }

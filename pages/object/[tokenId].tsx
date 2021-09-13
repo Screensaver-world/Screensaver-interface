@@ -3,10 +3,6 @@ import { Layout } from '../../components'
 import { useRouter } from 'next/router'
 import ItemDetailView from './ItemDetailView'
 import axios from 'axios'
-import { ethers } from 'ethers'
-import { GALLERY_ABI } from '../../constants/gallery'
-import { getNetworkLibrary } from '../../connectors'
-// import NFT from '../../types'
 import BiddingDetailView from './BiddingDetailView'
 import BidHistory from './BidHistory'
 import Head from 'next/head'
@@ -14,6 +10,7 @@ import Error from '../../components/Error'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { db, auth } from '../../config/firebase'
+import { useGalleryContract } from '../../hooks/useContract'
 
 type NFT = {
   name: string
@@ -59,6 +56,7 @@ const ItemDetailPage: React.VFC = () => {
   const [isContractOwner, setIsContractOwner] = useState<boolean>(false)
   const [reportStatus, setReportStatus] = useState<string>('')
   const [isSignedIn, setIsSignedIn] = useState(false) // Local signed-in state.
+  const galleryContract = useGalleryContract();
 
   useEffect(() => {
     const unregisterAuthObserver = auth().onAuthStateChanged((user) => {
@@ -70,21 +68,11 @@ const ItemDetailPage: React.VFC = () => {
   // ownerOf
   async function checkOwnerOf() {
     try {
-      const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-        GALLERY_ABI,
-        getNetworkLibrary(),
-      )
-
-      var ownerOf = await contract.ownerOf(tokenId)
-      var contractOwner = await contract.owner()
-
+      var ownerOf = await galleryContract.ownerOf(tokenId)
+      var contractOwner = await galleryContract.owner()
       const accountIsContractOwner = contractOwner === account
-
       setIsContractOwner(accountIsContractOwner)
-
       if (ownerOf !== account) return
-
       setOwnerOf(true)
     } catch (error) {
       console.log('error')
@@ -126,12 +114,8 @@ const ItemDetailPage: React.VFC = () => {
   async function getUri() {
     try {
       setUriError(null)
-      const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-        GALLERY_ABI,
-        getNetworkLibrary(),
-      )
-      var tokenUri = await contract.tokenURI(tokenId)
+
+      var tokenUri = await galleryContract.tokenURI(tokenId)
       setUri(tokenUri)
     } catch (error) {
       console.log('error', error)

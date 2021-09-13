@@ -38,5 +38,5 @@ export function useGalleryContract(
   tokenAddress?: string,
   withSignerIfPossible?: boolean
 ): Contract | undefined {
-  return useContract(tokenAddress, GALLERY_ABI, withSignerIfPossible)
+  return useContract(tokenAddress = process.env.NEXT_PUBLIC_CONTRACT_ID_ARBITRUM, GALLERY_ABI, withSignerIfPossible)
 }

@@ -11,6 +11,7 @@ import { getNetworkLibrary } from '../../connectors'
 import ReportButton from '../../components/ReportButton'
 import BurnButton from '../../components/BurnButton'
 import Vibes from './Vibes'
+import { useGalleryContract } from '../../hooks/useContract'
 
 var utils = require('ethers').utils
 
@@ -29,20 +30,16 @@ const BiddingDetailView = ({ tokenId }) => {
   const [hasBurnerRole, setHasBurnerRole] = useState<boolean>(false)
   const [bidExists, setBidExists] = useState<boolean>(false)
   const [bidder, setBidder] = useState<string | undefined>()
+  const galleryContract = useGalleryContract();
 
   // ownerOf
   async function checkOwnerOf() {
     try {
-      const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-        GALLERY_ABI,
-        getNetworkLibrary(),
-      )
 
-      var ownerOf = await contract.ownerOf(tokenId)
-      var contractOwner = await contract.owner()
+      var ownerOf = await galleryContract.ownerOf(tokenId)
+      var contractOwner = await galleryContract.owner()
       if (!!account) {
-        var accountHasBurnerRole = await contract.hasRole(
+        var accountHasBurnerRole = await galleryContract.hasRole(
           '0x9667e80708b6eeeb0053fa0cca44e028ff548e2a9f029edfeac87c118b08b7c8',
           account,
         )
@@ -65,15 +62,7 @@ const BiddingDetailView = ({ tokenId }) => {
 
   // get current bids
   async function currentBids() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-
-    var currentBid = await contract.currentBidDetailsOfToken(tokenId)
-
-    console.log(currentBid)
+    var currentBid = await galleryContract.currentBidDetailsOfToken(tokenId)
 
     if (utils.formatEther(currentBid[0]) === '0.0') {
       setBidder(currentBid[1])
@@ -87,14 +76,8 @@ const BiddingDetailView = ({ tokenId }) => {
   // get approved
   async function getApproved() {
     try {
-      const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-        GALLERY_ABI,
-        getNetworkLibrary(),
-      )
-      var approvedAddress = await contract.getApproved(tokenId)
-
-      setApprovalStatus(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID_ARB)
+      var approvedAddress = await galleryContract.getApproved(tokenId)
+      setApprovalStatus(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID)
     } catch (error) {
       console.log('error', error)
       setApprovalStatus(false)
@@ -105,29 +88,14 @@ const BiddingDetailView = ({ tokenId }) => {
   async function removeFromSale() {
     try {
       setApprovalLoading(true)
-
-      const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-        GALLERY_ABI,
-        library.getSigner(account),
-      )
-
-      const tx = await contract.approve(
+      const tx = await galleryContract.approve(
         '0x0000000000000000000000000000000000000000',
         tokenId,
       )
-
-      console.log('APPROVAL CALLED')
-
       setLoading(true)
-
       const receipt = await tx.wait()
-
-      console.log('WAIT', receipt)
-
       getApproved()
       setLoading(false)
-
       setApprovalLoading(false)
     } catch (error) {
       console.log('error')
@@ -138,22 +106,12 @@ const BiddingDetailView = ({ tokenId }) => {
   async function approve() {
     try {
       setApprovalLoading(true)
-
-      const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-        GALLERY_ABI,
-        library.getSigner(account),
-      )
-
-      const tx = await contract.approve(
-        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
+      const tx = await galleryContract.approve(
+        process.env.NEXT_PUBLIC_CONTRACT_ID,
         tokenId,
       )
-
       setLoading(true)
-
-      const receipt = await tx.wait()
-
+      await tx.wait()
       getApproved()
       setLoading(false)
       setApprovalLoading(false)

@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { ethers } from 'ethers'
-import { GALLERY_ABI } from '../constants/gallery'
 import Modal from '../components/Modal'
-import { getNetworkLibrary } from '../connectors'
-import AccountId from './AccountId'
 import SetSalePrice from './SetSalePrice'
+import {useGalleryContract} from '../hooks/useContract'
 
 var utils = require('ethers').utils
 
@@ -21,34 +18,18 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
   const [salePrice, setSalePrice] = useState<number>(0)
-
+  const galleryContract = useGalleryContract();
+  
   // ownerOf
   async function checkOwnerOf() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-    var ownerOf = await contract.ownerOf(tokenId)
-
-    console.log('Owner of', ownerOf)
-
+    var ownerOf = await galleryContract.ownerOf(tokenId)
     if (ownerOf !== account) return
-
     setOwnerOf(true)
   }
 
   // get sale price
   async function getSalePrice() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      getNetworkLibrary(),
-    )
-    var tokenPrice = await contract.tokenPrice(tokenId)
-
-    console.log('Token Price', tokenPrice)
-
+    var tokenPrice = await galleryContract.getTokenPrice(tokenId)
     if (utils.formatEther(tokenPrice) === '0.0') {
       setSalePrice(0)
     } else {
@@ -58,48 +39,22 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
 
   // remove from sale
   async function buyNow() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      library.getSigner(account),
-    )
-
-    const big = utils.parseEther(salePrice)
-    console.log('VALUE AT CREATE BID CALL', salePrice, big)
     let overrides = {
       // To convert Ether to Wei:
       value: utils.parseEther(salePrice)// ether in this case MUST be a string
     }
-
-    // Pass in the overrides as the 3rd parameter to your 2-parameter function:
-
-    const tx = await contract.buy(tokenId.toString(), overrides)
-
+    const tx = await galleryContract.buy(tokenId.toString(), overrides)
     setLoading(true)
-
     await tx.wait()
-
     setLoading(false)
   }
 
   // remove from sale
   async function removeFromSale() {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      library.getSigner(account),
-    )
-
-    // Pass in the overrides as the 3rd parameter to your 2-parameter function:
-
-    const tx = await contract.setWeiSalePrice(tokenId.toString(), '0')
-
+    const tx = await galleryContract.setWeiSalePrice(tokenId.toString(), '0')
     setLoading(true)
-
-    const receipt = await tx.wait()
-
+    await tx.wait()
     setLoading(false)
-
   }
 
   // component mount check for current bid
@@ -107,8 +62,6 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
     checkOwnerOf()
     getSalePrice()
   }, [account])
-
-  // if no bid do not show this coomponent
 
   return (
     <>

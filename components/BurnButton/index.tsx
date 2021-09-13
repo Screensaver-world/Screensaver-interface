@@ -2,40 +2,23 @@ import React from 'react'
 import { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers'
-import { ethers } from 'ethers'
-import { GALLERY_ABI } from '../../constants/gallery'
 import { useRouter } from 'next/router'
-import { getNetworkLibrary } from '../../connectors'
+import { useGalleryContract } from '../../hooks/useContract'
 
 export default function index() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { tokenId } = router.query
   const { account, library } = useWeb3React<Web3Provider>()
+  const galleryContract = useGalleryContract();
 
   async function burn(tokenId: string) {
-    const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-      GALLERY_ABI,
-      library.getSigner(account),
-    )
-
+    
     setLoading(true)
-
-    let tx = await contract.burn(tokenId)
-    const receipt = await tx.wait()
-
-    // let topic = ethers.utils.id('Transfer(address,address,uint256)')
-
-    // let filter = {
-    //   address: process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
-    //   topics: [topic, null, ethers.utils.hexZeroPad(account, 32)],
-    // }
-
-    // setTimeout(() => {
-      setLoading(false)
-      router.push(`/owned/${account}`)
-    // }, 20000)
+    let tx = await galleryContract.burn(tokenId)
+    await tx.wait()
+    setLoading(false)
+    router.push(`/owned/${account}`)
 
   }
 
