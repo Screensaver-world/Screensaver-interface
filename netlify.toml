@@ -1,7 +1,6 @@
-
 [[redirects]]
-  from = "/object/:object"
-  to = "/object/[tokenId].html?object=:tokenId"
+  from = "/object/:object/:contract"
+  to = "/object/[contract]/[tokenId].html?object=:tokenId"
   status = 200
 
 [[redirects]]
@@ -63,7 +62,6 @@
   from = "/admin/:admin"
   to = "/admin/:admin"
   status = 200
-
 
 # you can also target a specific branch
 [context.v0.environment]

@@ -30,7 +30,7 @@ const index: React.FC<IProps> = ({ hash }) => {
   async function goToNFT() {
     var supply = await galleryContract.totalMinted()
     var parsedSupply = supply.toNumber()
-    router.push(`/object/${parsedSupply}`)
+    router.push(`/object/0x486ca491C9A0a9ACE266AA100976bfefC57A0Dd4/${parsedSupply}`)
   }
 
   return (

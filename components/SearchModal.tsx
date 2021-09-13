@@ -288,7 +288,7 @@ const SearchModal: React.VFC<IProps> = ({ open, setOpen }) => {
                       : 
                       nfts.map((nft) => (
                           <tr key={nft.tokenId + nft.name}>
-                            <Link href={`/object/${nft.tokenId}`}>
+                            <Link href={`/object/0x486ca491C9A0a9ACE266AA100976bfefC57A0Dd4/${nft.tokenId}`}>
                               <td className="px-6 py-4 whitespace-nowrap cursor-pointer">
                                 <div className="flex items-center space-x-5">
                                   {/* <div className="flex-shrink-0 h-10 w-10"> */}

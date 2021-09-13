@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Layout } from '../../components'
+import { Layout } from '../../../components'
 import { useRouter } from 'next/router'
-import ItemDetailView from './ItemDetailView'
+import ItemDetailView from '../ItemDetailView'
 import axios from 'axios'
-import BiddingDetailView from './BiddingDetailView'
-import BidHistory from './BidHistory'
+import BiddingDetailView from '../BiddingDetailView'
+import BidHistory from '../BidHistory'
 import Head from 'next/head'
-import Error from '../../components/Error'
+import Error from '../../../components/Error'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { db, auth } from '../../config/firebase'
-import { useGalleryContract } from '../../hooks/useContract'
+import { db, auth } from '../../../config/firebase'
+import { useGalleryContract } from '../../../hooks/useContract'
 
 type NFT = {
   name: string
@@ -45,7 +45,7 @@ const ReportItem = ({ report }) => {
 const ItemDetailPage: React.VFC = () => {
   const { account } = useWeb3React<Web3Provider>()
   const router = useRouter()
-  const { tokenId, preview } = router.query
+  const { tokenId, preview, contract } = router.query
   const [uri, setUri] = useState<undefined | string>()
   const [uriError, setUriError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
@@ -56,7 +56,7 @@ const ItemDetailPage: React.VFC = () => {
   const [isContractOwner, setIsContractOwner] = useState<boolean>(false)
   const [reportStatus, setReportStatus] = useState<string>('')
   const [isSignedIn, setIsSignedIn] = useState(false) // Local signed-in state.
-  const galleryContract = useGalleryContract();
+  const galleryContract = useGalleryContract(contract.toString());
 
   useEffect(() => {
     const unregisterAuthObserver = auth().onAuthStateChanged((user) => {
@@ -114,7 +114,7 @@ const ItemDetailPage: React.VFC = () => {
   async function getUri() {
     try {
       setUriError(null)
-
+      console.log("TOKEN ID", tokenId, galleryContract)
       var tokenUri = await galleryContract.tokenURI(tokenId)
       setUri(tokenUri)
     } catch (error) {
@@ -144,7 +144,7 @@ const ItemDetailPage: React.VFC = () => {
     } else {
       getUri()
     }
-  }, [tokenId, preview])
+  }, [tokenId, preview, galleryContract])
 
   if (uriError) {
     return (
@@ -173,7 +173,7 @@ const ItemDetailPage: React.VFC = () => {
           <meta property="og:description" content={metadata.description} />
           <meta
             property="og:url"
-            content={`https://www.screensaver.world/object/${tokenId}`}
+            content={`https://www.screensaver.world/object/0x486ca491C9A0a9ACE266AA100976bfefC57A0Dd4/${tokenId}`}
           />
           <meta property="og:type" content="website" />
           <meta name="twitter:card" content="summary_large_image" />
