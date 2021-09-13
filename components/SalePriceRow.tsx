@@ -25,7 +25,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
   // ownerOf
   async function checkOwnerOf() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       getNetworkLibrary(),
     )
@@ -41,7 +41,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
   // get sale price
   async function getSalePrice() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       getNetworkLibrary(),
     )
@@ -59,7 +59,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
   // remove from sale
   async function buyNow() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       library.getSigner(account),
     )
@@ -85,7 +85,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
   // remove from sale
   async function removeFromSale() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       library.getSigner(account),
     )

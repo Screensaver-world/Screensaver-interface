@@ -71,7 +71,7 @@ const ItemDetailPage: React.VFC = () => {
   async function checkOwnerOf() {
     try {
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID,
+        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
         GALLERY_ABI,
         getNetworkLibrary(),
       )
@@ -127,7 +127,7 @@ const ItemDetailPage: React.VFC = () => {
     try {
       setUriError(null)
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID,
+        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
         GALLERY_ABI,
         getNetworkLibrary(),
       )

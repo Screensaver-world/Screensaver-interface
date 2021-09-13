@@ -49,7 +49,7 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
   async function getNFTFromContract() {
 
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       getNetworkLibrary(),
     )
@@ -104,7 +104,7 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
     if (!nft?.tokenId) return
 
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       getNetworkLibrary(),
     )
@@ -121,13 +121,13 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
   // get approved
   async function getApproved() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       getNetworkLibrary(),
     )
     var approvedAddress = await contract.getApproved(nft?.tokenId)
 
-    setForSale(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID)
+    setForSale(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID_ARB)
   }
 
   useEffect(() => {

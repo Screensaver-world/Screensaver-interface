@@ -77,7 +77,7 @@ const Vibes = ({ tokenId }) => {
   const [claimableVibes, setClaimableVibes] = useState<string>('');
   const startDateTime = useRef(new Date());
 
-  const vibesTokenUrl = `${SICK_VIBES_SITE_URL}/tokens/${process.env.NEXT_PUBLIC_CONTRACT_ID}/${tokenId}`;
+  const vibesTokenUrl = `${SICK_VIBES_SITE_URL}/tokens/${process.env.NEXT_PUBLIC_CONTRACT_ID_ARB}/${tokenId}`;
 
   const getVibes = async () => {
     const contract = new ethers.Contract(
@@ -85,7 +85,7 @@ const Vibes = ({ tokenId }) => {
       VIBES_WELLSPRING_ABI,
       getNetworkLibrary(),
     )
-    const token = await contract.getToken(process.env.NEXT_PUBLIC_CONTRACT_ID, tokenId);
+    const token = await contract.getToken(process.env.NEXT_PUBLIC_CONTRACT_ID_ARB, tokenId);
     if (token && token.isSeeded) {
       setTokenInfo(token);
     } 

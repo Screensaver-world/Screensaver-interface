@@ -233,7 +233,7 @@ const AccountView: React.VFC<IProps> = ({ state }) => {
 
   async function getBalanceOf() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       getNetworkLibrary(),
     )
@@ -244,7 +244,7 @@ const AccountView: React.VFC<IProps> = ({ state }) => {
 
   async function getTotalSupply() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       getNetworkLibrary(),
     )

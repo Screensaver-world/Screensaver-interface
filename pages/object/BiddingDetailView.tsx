@@ -34,7 +34,7 @@ const BiddingDetailView = ({ tokenId }) => {
   async function checkOwnerOf() {
     try {
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID,
+        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
         GALLERY_ABI,
         getNetworkLibrary(),
       )
@@ -66,7 +66,7 @@ const BiddingDetailView = ({ tokenId }) => {
   // get current bids
   async function currentBids() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       getNetworkLibrary(),
     )
@@ -88,13 +88,13 @@ const BiddingDetailView = ({ tokenId }) => {
   async function getApproved() {
     try {
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID,
+        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
         GALLERY_ABI,
         getNetworkLibrary(),
       )
       var approvedAddress = await contract.getApproved(tokenId)
 
-      setApprovalStatus(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID)
+      setApprovalStatus(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID_ARB)
     } catch (error) {
       console.log('error', error)
       setApprovalStatus(false)
@@ -107,7 +107,7 @@ const BiddingDetailView = ({ tokenId }) => {
       setApprovalLoading(true)
 
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID,
+        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
         GALLERY_ABI,
         library.getSigner(account),
       )
@@ -140,13 +140,13 @@ const BiddingDetailView = ({ tokenId }) => {
       setApprovalLoading(true)
 
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_CONTRACT_ID,
+        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
         GALLERY_ABI,
         library.getSigner(account),
       )
 
       const tx = await contract.approve(
-        process.env.NEXT_PUBLIC_CONTRACT_ID,
+        process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
         tokenId,
       )
 

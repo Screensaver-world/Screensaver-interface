@@ -19,7 +19,7 @@ export default function Home() {
   // ownerOf
   async function checkIsWhitelisted() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       getNetworkLibrary(),
     )

@@ -32,7 +32,7 @@ const index: React.FC<IProps> = ({ hash }) => {
 
   async function createToken(uri: string) {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       library.getSigner(account),
     )
@@ -51,7 +51,7 @@ const index: React.FC<IProps> = ({ hash }) => {
     // let topic = ethers.utils.id('Transfer(address,address,uint256)')
 
     // let filter = {
-    //   address: process.env.NEXT_PUBLIC_CONTRACT_ID,
+    //   address: process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
     //   topics: [topic, null, ethers.utils.hexZeroPad(account, 32)],
     // }
 
@@ -70,7 +70,7 @@ const index: React.FC<IProps> = ({ hash }) => {
 
   async function goToNFT() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       library.getSigner(account),
     )
@@ -88,7 +88,7 @@ const index: React.FC<IProps> = ({ hash }) => {
   //   let topic = ethers.utils.id('Transfer(address,address,uint256)')
 
   //   let filter = {
-  //     address: process.env.NEXT_PUBLIC_CONTRACT_ID,
+  //     address: process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
   //     topics: [topic],
   //   }
 

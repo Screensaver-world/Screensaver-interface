@@ -15,7 +15,7 @@ export default function index() {
 
   async function burn(tokenId: string) {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       library.getSigner(account),
     )
@@ -28,7 +28,7 @@ export default function index() {
     // let topic = ethers.utils.id('Transfer(address,address,uint256)')
 
     // let filter = {
-    //   address: process.env.NEXT_PUBLIC_CONTRACT_ID,
+    //   address: process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
     //   topics: [topic, null, ethers.utils.hexZeroPad(account, 32)],
     // }
 

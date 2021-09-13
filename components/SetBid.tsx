@@ -46,7 +46,7 @@ const SetBid: React.VFC<IProps> = ({ onUpdate, tokenId, sale = true }) => {
   // accept active bid
   async function createBid() {
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_CONTRACT_ID,
+      process.env.NEXT_PUBLIC_CONTRACT_ID_ARB,
       GALLERY_ABI,
       library.getSigner(account),
     )
