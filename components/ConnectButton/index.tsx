@@ -27,6 +27,7 @@ export default function index() {
         })
     })
   }
+  
   return (
     <>
       <Modal status={'connect'} open={open} setOpen={setOpen} />

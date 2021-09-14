@@ -17,7 +17,6 @@ function useContract(
 ): Contract | undefined {
   
   const { library, account } = useActiveWeb3React()
-  console.log("ADDRESS", address)
 
   return useMemo(() => {
     if (!address || !ABI || !library) return undefined
@@ -39,6 +38,5 @@ export function useGalleryContract(
   tokenAddress?: string,
   withSignerIfPossible?: boolean
 ): Contract | undefined {
-  console.log("TOKEN ADDRESS", tokenAddress)
   return useContract(tokenAddress = process.env.NEXT_PUBLIC_CONTRACT_ID_ARBITRUM, GALLERY_ABI, withSignerIfPossible)
 }
