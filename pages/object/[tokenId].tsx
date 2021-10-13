@@ -125,6 +125,7 @@ const ItemDetailPage: React.VFC = () => {
       id: 0
   
   };
+  console.log("MEDIA DATA",  metadata.data)
 
     itemFromContract.name = metadata.data.name
     itemFromContract.description = metadata.data.description
