@@ -59,12 +59,6 @@
   "devDependencies": {
     "@auroradigital/prettier-config": "^1.0.1",
     "@babel/core": "^7.13.10",
-    "@storybook/addon-actions": "^6.2.7",
-    "@storybook/addon-docs": "^6.2.7",
-    "@storybook/addon-essentials": "^6.2.7",
-    "@storybook/addon-links": "^6.2.7",
-    "@storybook/addon-postcss": "^2.0.0",
-    "@storybook/react": "^6.2.7",
     "@svgr/webpack": "^5.5.0",
     "@types/node": "^14.14.35",
     "@types/react": "^17.0.4",
