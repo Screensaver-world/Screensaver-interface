@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "next build && next export",
-    "start": "next start"
+    "build-prod": "next build",
+    "start": "next start",
+    "build:tailwind": "postcss src/scss/base.scss -o src/scss/tailwind.scss",
   },
   "dependencies": {
     "@apollo/client": "^3.3.19",
