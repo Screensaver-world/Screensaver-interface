@@ -27,7 +27,7 @@ const ReportModal: React.VFC<IProps> = ({ open, setOpen }) => {
         if (doc.exists) {
           // ALREADY REPORTED
           let tickets = []
-          if (!!doc.data().tickets) {
+          if (doc.data().tickets) {
             tickets = doc.data().tickets
           }
           tickets.push({report, created: new Date(), account})
@@ -39,7 +39,7 @@ const ReportModal: React.VFC<IProps> = ({ open, setOpen }) => {
             })
         } else {
           // NOT YET REPORTED
-          let tickets = [{report, created: new Date(), account}]
+          const tickets = [{report, created: new Date(), account}]
           db.collection('reported')
             .doc(tokenId)
             .set({ tickets, status: 'pending' })

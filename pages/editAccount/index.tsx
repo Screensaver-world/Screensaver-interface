@@ -38,7 +38,7 @@ export default function Home() {
 
     if (!userProfile?.username || userProfile?.username === '') return
 
-    var safeUsername = userProfile?.username.replace(/[^A-Z0-9]+/ig, "_");
+    const safeUsername = userProfile?.username.replace(/[^A-Z0-9]+/ig, "_");
 
     setUserProfile({...userProfile, username: safeUsername.toLowerCase()})
 
@@ -79,7 +79,7 @@ export default function Home() {
     try {
       setLoading(true)
 
-      let originalMessage = userProfile
+      const originalMessage = userProfile
 
       originalMessage.timestamp = new Date()
 
@@ -141,7 +141,7 @@ export default function Home() {
                         type="text"
                         name="title"
                         id="title"
-                        value={!!userProfile ? userProfile?.username : ''}
+                        value={userProfile ? userProfile?.username : ''}
                         onChange={(e) => setUserProfile({...userProfile, username: e.target.value.toLowerCase()})}
                         className="flex-1 block w-full focus:ring-red-500 focus:border-red-500 min-w-0 sm:text-sm border-gray-700 bg-gray-900"
                       />
@@ -163,7 +163,7 @@ export default function Home() {
                       rows={3}
                       className="max-w-lg shadow-sm block w-full focus:ring-red-500 focus:border-red-500 sm:text-sm border-gray-700  bg-gray-900"
                       defaultValue={''}
-                      value={!!userProfile ? userProfile?.description : ''}
+                      value={userProfile ? userProfile?.description : ''}
                       onChange={(e) => setUserProfile({...userProfile, description: e.target.value})}
                     />
                     <p className="mt-2 text-sm text-gray-300">
@@ -199,7 +199,7 @@ export default function Home() {
                 cy="12"
                 r="10"
                 stroke="currentColor"
-                stroke-width="4"
+                strokeWidth="4"
               ></circle>
               <path
                 className="opacity-75"

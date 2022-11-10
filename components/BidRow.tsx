@@ -8,7 +8,7 @@ import { getNetworkLibrary } from '../connectors'
 import SetBid from './SetBid'
 import AccountId from './AccountId'
 
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 // TODO: setQuantity
 interface IProps {
@@ -31,7 +31,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
       GALLERY_ABI,
       getNetworkLibrary(),
     )
-    var ownerOf = await contract.ownerOf(tokenId)
+    const ownerOf = await contract.ownerOf(tokenId)
 
     console.log('Owner of', ownerOf)
 
@@ -48,7 +48,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
       getNetworkLibrary(),
     )
 
-    var currentBid = await contract.currentBidDetailsOfToken(tokenId)
+    const currentBid = await contract.currentBidDetailsOfToken(tokenId)
 
     console.log(currentBid)
 
@@ -128,7 +128,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
             {/** if owner of token : accept , if bidder : cancel, if neither or if bidder : place bid*/}
             {ownerOf && (
               <button
-                onClick={!!account ? acceptBid : () => setOpen(true)}
+                onClick={account ? acceptBid : () => setOpen(true)}
                 className="w-48 h-14 justify-center inline-flex items-center border border-red-300 shadow-sm text-red-300 font-medium rounded-full text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 Accept Bid
@@ -145,7 +145,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
                       cy="12"
                       r="10"
                       stroke="currentColor"
-                      stroke-width="4"
+                      strokeWidth="4"
                     ></circle>
                     <path
                       className="opacity-75"
@@ -166,7 +166,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
 
       {account === bidder && (
         <button
-          onClick={!!account ? cancelBid : () => setOpen(true)}
+          onClick={account ? cancelBid : () => setOpen(true)}
           className="w-48 h-14 justify-center inline-flex items-center border border-red-300 shadow-sm text-red-300 font-medium rounded-full text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         >
           Cancel Bid
@@ -183,7 +183,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
                 cy="12"
                 r="10"
                 stroke="currentColor"
-                stroke-width="4"
+                strokeWidth="4"
               ></circle>
               <path
                 className="opacity-75"

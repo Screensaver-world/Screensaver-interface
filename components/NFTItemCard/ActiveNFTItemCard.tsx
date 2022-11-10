@@ -12,7 +12,7 @@ import axios from 'axios'
 import NFT from '../../types'
 import makeBlockie from 'ethereum-blockies-base64'
 
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 const BID_QUERY = gql`
   query Bid($item: String) {
@@ -54,11 +54,11 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
       getNetworkLibrary(),
     )
 
-    var uri = await contract.tokenURI(nft.tokenId)
+    const uri = await contract.tokenURI(nft.tokenId)
     console.log("URI", uri)
     if (uri.includes(undefined)) return null
-    var metadata = await axios.get(uri)
-    var itemFromContract: NFT = {
+    const metadata = await axios.get(uri)
+    const itemFromContract: NFT = {
       name: "",
       description: "",
       broken: true,
@@ -113,7 +113,7 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
       getNetworkLibrary(),
     )
 
-    var currentBid = await contract.currentBidDetailsOfToken(nft.tokenId)
+    const currentBid = await contract.currentBidDetailsOfToken(nft.tokenId)
 
     if (utils.formatEther(currentBid[0]) === '0.0') {
       setCurrentBid(null)
@@ -129,7 +129,7 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
       GALLERY_ABI,
       getNetworkLibrary(),
     )
-    var approvedAddress = await contract.getApproved(nft?.tokenId)
+    const approvedAddress = await contract.getApproved(nft?.tokenId)
 
     setForSale(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID)
   }
@@ -172,7 +172,7 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
               <>
                 <div className={'text-xl font-medium'}>Current Bid</div>
                 <div className={'text-2xl font-light'}>
-                  {!!currentBid ? (
+                  {currentBid ? (
                     `${currentBid} Matic`
                   ) : forSale ? (
                     <div className={'text-lg font-light mt-2 text-gray-100'}>

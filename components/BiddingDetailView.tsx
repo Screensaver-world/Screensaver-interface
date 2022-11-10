@@ -12,7 +12,7 @@ import ReportButton from './ReportButton'
 import BurnButton from './BurnButton'
 import Vibes from '../pages/object/Vibes'
 
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 interface IProps {
   tokenId: string
@@ -39,10 +39,10 @@ const BiddingDetailView = ({ tokenId }) => {
         getNetworkLibrary(),
       )
 
-      var ownerOf = await contract.ownerOf(tokenId)
-      var contractOwner = await contract.owner()
-      if (!!account) {
-        var accountHasBurnerRole = await contract.hasRole(
+      const ownerOf = await contract.ownerOf(tokenId)
+      const contractOwner = await contract.owner()
+      if (account) {
+        const accountHasBurnerRole = await contract.hasRole(
           '0x9667e80708b6eeeb0053fa0cca44e028ff548e2a9f029edfeac87c118b08b7c8',
           account,
         )
@@ -71,7 +71,7 @@ const BiddingDetailView = ({ tokenId }) => {
       getNetworkLibrary(),
     )
 
-    var currentBid = await contract.currentBidDetailsOfToken(tokenId)
+    const currentBid = await contract.currentBidDetailsOfToken(tokenId)
 
     console.log(currentBid)
 
@@ -92,7 +92,7 @@ const BiddingDetailView = ({ tokenId }) => {
         GALLERY_ABI,
         getNetworkLibrary(),
       )
-      var approvedAddress = await contract.getApproved(tokenId)
+      const approvedAddress = await contract.getApproved(tokenId)
 
       setApprovalStatus(approvedAddress === process.env.NEXT_PUBLIC_CONTRACT_ID)
     } catch (error) {
@@ -205,7 +205,7 @@ const BiddingDetailView = ({ tokenId }) => {
                       cy="12"
                       r="10"
                       stroke="currentColor"
-                      stroke-width="4"
+                      strokeWidth="4"
                     ></circle>
                     <path
                       className="opacity-75"

@@ -14,7 +14,7 @@ import { GALLERY_ABI } from '../../constants/gallery'
 import { getNetworkLibrary } from '../../connectors'
 import { ethers } from 'ethers'
 
-var uri = 'https://us-central1-broccoli-df8cd.cloudfunctions.net/api/mint'
+const uri = 'https://us-central1-broccoli-df8cd.cloudfunctions.net/api/mint'
 const uriSelfPin =
   'https://us-central1-broccoli-df8cd.cloudfunctions.net/api/mintSelfPin'
 
@@ -44,7 +44,7 @@ export default function Mint() {
       GALLERY_ABI,
       getNetworkLibrary(),
     )
-    var whitelistStatus = await contract.isWhitelisted(account)
+    const whitelistStatus = await contract.isWhitelisted(account)
 
     console.log('WHITELIST', whitelistStatus)
     setIsWhitelisted(whitelistStatus)
@@ -92,8 +92,8 @@ export default function Mint() {
     thumbnailUrl: string,
     mimeType: string,
   ) {
-    var parsedTags = parseTags(tags)
-    var creationDate = new Date()
+    const parsedTags = parseTags(tags)
+    const creationDate = new Date()
     const metadata = {
       name: title,
       creationDate: new Date(),
@@ -124,7 +124,7 @@ export default function Mint() {
     setLoading(true)
 
     try {
-      var parsedTags = parseTags(tags)
+      const parsedTags = parseTags(tags)
 
       const mediaInfo = await axios({
         url: `https://ipfs.io/ipfs/${mediaCid}`, //your url
@@ -172,17 +172,17 @@ export default function Mint() {
 
     try {
       // Create a root reference
-      var storageRef = storage().ref()
-      var name = media.name
+      const storageRef = storage().ref()
+      const name = media.name
 
       // Create a reference to 'mountains.jpg'
-      var fileRef = storageRef.child(name.split(' ').join('_'))
+      const fileRef = storageRef.child(name.split(' ').join('_'))
 
       // upload file to temp storage
       await fileRef.put(media)
 
       // get download url
-      var downloadUrl = await fileRef.getDownloadURL()
+      const downloadUrl = await fileRef.getDownloadURL()
 
       // get metadata of file to get file type
       const metadata = await fileRef.getMetadata()
@@ -195,11 +195,11 @@ export default function Mint() {
 
       if (includeThumbnail) {
         // Create a root reference
-        var thumbnailStorageRef = storage().ref()
-        var thumbnailName = thumbnailMedia.name
+        const thumbnailStorageRef = storage().ref()
+        const thumbnailName = thumbnailMedia.name
 
         // Create a reference to 'mountains.jpg'
-        var thumbnailFileRef = thumbnailStorageRef.child(
+        const thumbnailFileRef = thumbnailStorageRef.child(
           thumbnailName.split(' ').join('_'),
         )
 
@@ -568,7 +568,7 @@ export default function Mint() {
                     cy="12"
                     r="10"
                     stroke="currentColor"
-                    stroke-width="4"
+                    strokeWidth="4"
                   ></circle>
                   <path
                     className="opacity-75"

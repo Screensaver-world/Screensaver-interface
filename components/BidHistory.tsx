@@ -4,7 +4,7 @@ import { gql, useQuery } from '@apollo/client'
 import { useState, useEffect } from 'react'
 import moment from 'moment'
 
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 const BID_QUERY = gql`
   query Bid($item: String) {

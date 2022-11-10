@@ -8,7 +8,7 @@ import { getNetworkLibrary } from '../connectors'
 import AccountId from './AccountId'
 import SetSalePrice from './SetSalePrice'
 
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 // TODO: setQuantity
 interface IProps {
@@ -29,7 +29,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
       GALLERY_ABI,
       getNetworkLibrary(),
     )
-    var ownerOf = await contract.ownerOf(tokenId)
+    const ownerOf = await contract.ownerOf(tokenId)
 
     console.log('Owner of', ownerOf)
 
@@ -45,7 +45,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
       GALLERY_ABI,
       getNetworkLibrary(),
     )
-    var tokenPrice = await contract.tokenPrice(tokenId)
+    const tokenPrice = await contract.tokenPrice(tokenId)
 
     console.log('Token Price', tokenPrice)
 
@@ -66,7 +66,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
 
     const big = utils.parseEther(salePrice)
     console.log('VALUE AT CREATE BID CALL', salePrice, big)
-    let overrides = {
+    const overrides = {
       // To convert Ether to Wei:
       value: utils.parseEther(salePrice)// ether in this case MUST be a string
     }
@@ -129,7 +129,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
             {/** if owner of token : accept , if bidder : cancel, if neither or if bidder : place bid*/}
             {!ownerOf ? (
               <button
-                onClick={!!account ? buyNow : () => setOpen(true)}
+                onClick={account ? buyNow : () => setOpen(true)}
                 className="w-36 md:w-48 h-14 justify-center inline-flex items-center border border-red-300 shadow-sm text-red-300 font-medium rounded-full text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 Buy Now
@@ -146,7 +146,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
                       cy="12"
                       r="10"
                       stroke="currentColor"
-                      stroke-width="4"
+                      strokeWidth="4"
                     ></circle>
                     <path
                       className="opacity-75"
@@ -158,7 +158,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
               </button>
             ) : (
               <button
-                onClick={!!account ? removeFromSale : () => setOpen(true)}
+                onClick={account ? removeFromSale : () => setOpen(true)}
                 className="w-48 h-14 justify-center inline-flex items-center border border-red-300 shadow-sm text-red-300 font-medium rounded-full text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 Remove Sale
@@ -175,7 +175,7 @@ const BidRow: React.VFC<IProps> = ({ tokenId }) => {
                       cy="12"
                       r="10"
                       stroke="currentColor"
-                      stroke-width="4"
+                      strokeWidth="4"
                     ></circle>
                     <path
                       className="opacity-75"

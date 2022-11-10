@@ -17,7 +17,7 @@ import { useRouter } from 'next/router'
 import SearchModal from '../../SearchModal'
 import { FaTwitter, FaDiscord } from 'react-icons/fa'
 
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 const tokenAddress = '0x580127f3F17516A945785b9485048ad22f036142'
 
@@ -60,8 +60,8 @@ const MobileNavbar: React.FC<IProps> = () => {
       library.getSigner(account),
     )
 
-    var balance = await contract.balanceOf(account)
-    var intBalance = utils.formatEther(balance)
+    const balance = await contract.balanceOf(account)
+    const intBalance = utils.formatEther(balance)
     setTokenBalance(Number(intBalance))
   }
 
@@ -214,7 +214,7 @@ const MobileNavbar: React.FC<IProps> = () => {
                           <a
                             href="https://discord.gg/fAGHysxKux"
                             target="_blank"
-                            className="inline-flex px-4 py-2 text-lg text-black font-bold hover:bg-gray-100 items-center"
+                            className="inline-flex px-4 py-2 text-lg text-black font-bold hover:bg-gray-100 items-center" rel="noreferrer"
                           >
                             <FaDiscord className="mr-4 bg-black-500" /> Discord
                           </a>
@@ -225,7 +225,7 @@ const MobileNavbar: React.FC<IProps> = () => {
                           <a
                             href="https://twitter.com/screensavernft"
                             target="_blank"
-                            className="inline-flex px-4 py-2 text-lg text-black font-bold hover:bg-gray-100 items-center"
+                            className="inline-flex px-4 py-2 text-lg text-black font-bold hover:bg-gray-100 items-center" rel="noreferrer"
                           >
                             <FaTwitter className="mr-4 text-blue-500" /> Twitter
                           </a>

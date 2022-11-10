@@ -44,7 +44,7 @@ const SearchView: React.VFC<IProps> = ({ created, owned, admin }) => {
       .collection('reported')
       .onSnapshot((reportsSnapshot) => {
         if (reportsSnapshot.empty) return
-        let ids = []
+        const ids = []
         reportsSnapshot.forEach((doc) => {
           ids.push(parseInt(doc.id))
         })
@@ -70,10 +70,10 @@ const SearchView: React.VFC<IProps> = ({ created, owned, admin }) => {
 
   async function getCollectionIds(data) {
 
-    let ids = data.artworkSearch.map(a => a.id)
+    const ids = data.artworkSearch.map(a => a.id)
 
-    let filteredIds = ids.filter((v, i) => ids.indexOf(v) === i)
-    let ascending = filteredIds.sort(function (a, b) {
+    const filteredIds = ids.filter((v, i) => ids.indexOf(v) === i)
+    const ascending = filteredIds.sort(function (a, b) {
       return a - b
     })
 
@@ -90,14 +90,14 @@ const SearchView: React.VFC<IProps> = ({ created, owned, admin }) => {
       getNetworkLibrary(),
     )
 
-    var allMetadata = await Promise.all(
+    const allMetadata = await Promise.all(
       range.map(async (id) => {
         try {
           console.log("HERE")
-          var uri = await contract.tokenURI(id)
+          const uri = await contract.tokenURI(id)
           console.log("URI", uri)
           if (uri.includes(undefined)) return null
-          var metadata = await axios.get(uri)
+          const metadata = await axios.get(uri)
           metadata.data.tokenId = id
           return metadata.data
         } catch (error) {

@@ -5,7 +5,7 @@ import { gql, useQuery } from '@apollo/client'
 import AccountId from './AccountId'
 import Link from 'next/link'
 
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 const BIDS_QUERY = gql`
   query Gallery(

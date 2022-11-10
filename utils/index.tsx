@@ -13,8 +13,8 @@ export function isAddress(value: any): string | false {
 }
 
 export function parseTags(tags: string): string[] {
-  var tagString = tags.replace(/\s/g, '')
-  var tagArray = tagString.split(',')
+  const tagString = tags.replace(/\s/g, '')
+  const tagArray = tagString.split(',')
   return tagArray
 }
 
@@ -67,11 +67,11 @@ export function escapeRegExp(string: string): string {
 }
 
 export function dateFromTimestamp(timestamp: string): string {
-  let date = new Date(parseInt(timestamp))
-  let year = date.getFullYear()
-  let month = date.getMonth() + 1
-  let day = date.getDate()
-  let formattedDate = month + '/' + day + '/' + year
+  const date = new Date(parseInt(timestamp))
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const formattedDate = month + '/' + day + '/' + year
   return formattedDate
 }
 

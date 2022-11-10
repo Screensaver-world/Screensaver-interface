@@ -120,7 +120,7 @@ const Vibes = ({ tokenId }) => {
       <div className={'flex flex-col space-y-8'}>
           <div className={'px-3 text-red-300 flex flex-row gap-x-1'}>
             <div>
-              <a target="_blank" href={vibesTokenUrl}>
+              <a target="_blank" href={vibesTokenUrl} rel="noreferrer">
                 <img
                   width={'25px'}
                   src={vibesLogo.src}
@@ -129,7 +129,7 @@ const Vibes = ({ tokenId }) => {
               </a>
             </div>
             <div>
-              <a target="_blank" href={vibesTokenUrl}>{claimableVibes} VIBES</a>
+              <a target="_blank" href={vibesTokenUrl} rel="noreferrer">{claimableVibes} VIBES</a>
             </div>
           </div>
       </div>

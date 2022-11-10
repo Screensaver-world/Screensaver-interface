@@ -41,10 +41,10 @@ export default function Home() {
   }, [storedGallery])
 
   useEffect(() => {
-    var idsString = ids.replace(/\s/g, '')
-    var parsedIdsString = idsString.split(',')
-    var filteredIds = parsedIdsString.filter((id) => !isNaN(parseInt(id)))
-    var parsedIds = filteredIds.map((id) => parseInt(id))
+    const idsString = ids.replace(/\s/g, '')
+    const parsedIdsString = idsString.split(',')
+    const filteredIds = parsedIdsString.filter((id) => !isNaN(parseInt(id)))
+    const parsedIds = filteredIds.map((id) => parseInt(id))
     setUserGallery({ ...userGallery, ids: parsedIds })
   }, [ids])
 
@@ -58,7 +58,7 @@ export default function Home() {
 
     if (!userGallery?.title || userGallery?.title === '') return
 
-    var safeTitle = userGallery?.title.replace(/[^a-zA-Z ]/g, '')
+    const safeTitle = userGallery?.title.replace(/[^a-zA-Z ]/g, '')
     setUserGallery({ ...userGallery, title: safeTitle.toLowerCase() })
 
     setLoadingTitleCheck(true)
@@ -99,7 +99,7 @@ export default function Home() {
     try {
       setLoading(true)
 
-      let originalMessage = userGallery
+      const originalMessage = userGallery
       originalMessage.timestamp = new Date()
       originalMessage.hidden = hide
 
@@ -189,7 +189,7 @@ export default function Home() {
                         type="text"
                         name="title"
                         id="title"
-                        value={!!userGallery ? userGallery?.title : ''}
+                        value={userGallery ? userGallery?.title : ''}
                         onChange={(e) =>
                           setUserGallery({
                             ...userGallery,
@@ -216,7 +216,7 @@ export default function Home() {
                       rows={3}
                       className="max-w-lg shadow-sm block w-full focus:ring-red-500 focus:border-red-500 sm:text-sm border-gray-700  bg-gray-900"
                       defaultValue={''}
-                      value={!!userGallery ? userGallery?.description : ''}
+                      value={userGallery ? userGallery?.description : ''}
                       onChange={(e) =>
                         setUserGallery({
                           ...userGallery,
@@ -281,7 +281,7 @@ export default function Home() {
                 cy="12"
                 r="10"
                 stroke="currentColor"
-                stroke-width="4"
+                strokeWidth="4"
               ></circle>
               <path
                 className="opacity-75"

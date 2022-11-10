@@ -244,7 +244,7 @@ const AccountView: React.VFC<IProps> = ({ state, account }) => {
       getNetworkLibrary(),
     )
 
-    var balance = await contract.balanceOf(account)
+    const balance = await contract.balanceOf(account)
     setBalanceOf(balance.toNumber())
   }
 
@@ -255,7 +255,7 @@ const AccountView: React.VFC<IProps> = ({ state, account }) => {
       getNetworkLibrary(),
     )
 
-    var supply = await contract.totalSupply()
+    const supply = await contract.totalSupply()
     setTotalSupply(supply.toNumber())
   }
 
@@ -267,8 +267,8 @@ const AccountView: React.VFC<IProps> = ({ state, account }) => {
   const getNfts = async (data) => {
     setSkip(nfts.length + data.artworks.length)
     if (state === 'bids') {
-      let bidData = data
-      let filteredBidData = bidData.artworks.filter(
+      const bidData = data
+      const filteredBidData = bidData.artworks.filter(
         (nft) =>
           nft?.forSale === true &&
           nft?.currentBid?.canceled !== true &&

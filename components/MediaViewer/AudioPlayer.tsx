@@ -18,7 +18,7 @@ const AudioPlayer: React.VFC<IProps> = ({
 
       <img
         className={'w-full'}
-        src={!!coverImageUrl ? coverImageUrl : require('../../assets/soundwave.png')}
+        src={coverImageUrl ? coverImageUrl : require('../../assets/soundwave.png')}
         alt={'sound wave'}
 
       />

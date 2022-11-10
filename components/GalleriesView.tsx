@@ -16,7 +16,7 @@ const GalleriesView: React.VFC = () => {
       return
     }
 
-    let tempGalleries = []
+    const tempGalleries = []
     snapshot.forEach((doc) => {
       console.log('DATA', doc.data())
       const gallery: Gallery = {

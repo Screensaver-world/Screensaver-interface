@@ -20,7 +20,7 @@ function useGalleryData({account}: IProps): [boolean, Gallery | undefined] {
           .onSnapshot((doc) => {
             if (!doc.exists) return setLoading(false);
 
-            let galleryData: Gallery = {
+            const galleryData: Gallery = {
                 title: '',
                 address: '',
                 ids: [],
@@ -29,19 +29,19 @@ function useGalleryData({account}: IProps): [boolean, Gallery | undefined] {
             };
             
             console.log("DOC", doc.data())
-            if (!!doc.data().title) {
+            if (doc.data().title) {
                 galleryData.title = doc.data().title
             }
             
-            if (!!doc.data().description) {
+            if (doc.data().description) {
                 galleryData.description = doc.data().description
             }
 
-            if (!!doc.data().ids) {
+            if (doc.data().ids) {
                 galleryData.ids = doc.data().ids
             }
 
-            if (!!doc.data().address) {
+            if (doc.data().address) {
                 galleryData.address = doc.data().address
             }
 

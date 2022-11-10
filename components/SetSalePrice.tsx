@@ -14,7 +14,7 @@ import { shortenAddress } from '../utils'
 import { getNetworkLibrary } from '../connectors'
 import { useMaticBalance } from '../hooks/useMaticBalance'
 import { BigNumber } from 'ethers'
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 interface IProps {
   onUpdate: () => void
@@ -101,7 +101,7 @@ const SetSalePrice: React.VFC<IProps> = ({
         </div>
         
           <button
-            onClick={!!account ? setSalePrice : () => setOpen(true)}
+            onClick={account ? setSalePrice : () => setOpen(true)}
             className="button mt-3 md:mt-0 md:ml-3 w-full md:w-1/2 justify-center inline-flex items-center px-6 py-3 border border-red-300 shadow-sm text-red-300 font-medium rounded-xs text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
            
           >
@@ -119,7 +119,7 @@ const SetSalePrice: React.VFC<IProps> = ({
                   cy="12"
                   r="10"
                   stroke="currentColor"
-                  stroke-width="4"
+                  strokeWidth="4"
                 ></circle>
                 <path
                   className="opacity-75"

@@ -10,7 +10,7 @@ import Modal from '../components/Modal'
 import classNames from 'classnames'
 import { useMaticBalance } from '../hooks/useMaticBalance'
 import { BigNumber } from 'ethers'
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 interface IProps {
   onUpdate: () => void
@@ -32,7 +32,7 @@ const SetBid: React.VFC<IProps> = ({ onUpdate, tokenId, sale = true }) => {
   const [ownerOf, setOwnerOf] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
   const maticBalance = useMaticBalance()
-  let transferTopic = ethers.utils.id('Transfer(address,address,uint256)')
+  const transferTopic = ethers.utils.id('Transfer(address,address,uint256)')
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
@@ -53,7 +53,7 @@ const SetBid: React.VFC<IProps> = ({ onUpdate, tokenId, sale = true }) => {
 
     const big = utils.parseEther(value)
     console.log('VALUE AT CREATE BID CALL', value, big)
-    let overrides = {
+    const overrides = {
       // To convert Ether to Wei:
       value: utils.parseEther(value), // ether in this case MUST be a string
     }
@@ -115,7 +115,7 @@ const SetBid: React.VFC<IProps> = ({ onUpdate, tokenId, sale = true }) => {
           </button>
         ) : (
           <button
-            onClick={!!account ? createBid : () => setOpen(true)}
+            onClick={account ? createBid : () => setOpen(true)}
             className="button mt-3 md:mt-0 md:ml-3 w-full md:w-1/2 justify-center inline-flex items-center px-6 py-3 border border-red-300 shadow-sm text-red-300 font-medium rounded-xs text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             disabled={
               !maticBalance || !value || !parseFloat(value) || hasPlaceBidError
@@ -135,7 +135,7 @@ const SetBid: React.VFC<IProps> = ({ onUpdate, tokenId, sale = true }) => {
                   cy="12"
                   r="10"
                   stroke="currentColor"
-                  stroke-width="4"
+                  strokeWidth="4"
                 ></circle>
                 <path
                   className="opacity-75"

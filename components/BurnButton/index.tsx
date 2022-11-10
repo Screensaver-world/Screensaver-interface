@@ -22,7 +22,7 @@ export default function index() {
 
     setLoading(true)
 
-    let tx = await contract.burn(tokenId)
+    const tx = await contract.burn(tokenId)
     const receipt = await tx.wait()
 
     // let topic = ethers.utils.id('Transfer(address,address,uint256)')
@@ -61,7 +61,7 @@ export default function index() {
                 cy="12"
                 r="10"
                 stroke="currentColor"
-                stroke-width="4"
+                strokeWidth="4"
               ></circle>
               <path
                 className="opacity-75"

@@ -59,7 +59,7 @@ export const FirebaseTrackingProvider = (props: { children: ReactNode }) => {
       return () => {
         router.events.off('routeChangeStart', handleRouteChange);
       };
-    };
+    }
   }, [tracking]);
 
   return (

@@ -19,7 +19,7 @@ function useAccountData({account}: IProps): [boolean, Profile | undefined] {
           .onSnapshot((doc) => {
             if (!doc.exists) return setLoading(false);
 
-            let accountData: Profile = {
+            const accountData: Profile = {
                 username: '',
                 profileImage: '',
                 bannerImage: '',
@@ -28,11 +28,11 @@ function useAccountData({account}: IProps): [boolean, Profile | undefined] {
             };
             
             console.log("DOC", doc.data())
-            if (!!doc.data().username) {
+            if (doc.data().username) {
                 accountData.username = doc.data().username
             }
             
-            if (!!doc.data().description) {
+            if (doc.data().description) {
                 accountData.description = doc.data().description
             }
 

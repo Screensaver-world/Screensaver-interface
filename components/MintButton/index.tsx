@@ -14,7 +14,7 @@ import { LibraryIcon } from '@heroicons/react/outline'
 import { BigNumber } from 'ethers'
 import { getNetworkLibrary } from '../../connectors'
 
-var utils = require('ethers').utils
+const utils = require('ethers').utils
 
 interface IProps {
   hash: string
@@ -39,7 +39,7 @@ const index: React.FC<IProps> = ({ hash }) => {
 
     setLoading(true)
 
-    let tx = await contract.createToken(uri)
+    const tx = await contract.createToken(uri)
 
     const receipt = await tx.wait();
 
@@ -75,11 +75,11 @@ const index: React.FC<IProps> = ({ hash }) => {
       library.getSigner(account),
     )
 
-    var supply = await contract.totalMinted()
+    const supply = await contract.totalMinted()
 
     console.log("SUPPLY", supply)
 
-    var parsedSupply = supply.toNumber()
+    const parsedSupply = supply.toNumber()
 
     router.push(`/object/${parsedSupply}`)
   }
@@ -131,7 +131,7 @@ const index: React.FC<IProps> = ({ hash }) => {
                 cy="12"
                 r="10"
                 stroke="currentColor"
-                stroke-width="4"
+                strokeWidth="4"
               ></circle>
               <path
                 className="opacity-75"

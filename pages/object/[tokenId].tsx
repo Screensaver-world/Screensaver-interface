@@ -57,8 +57,8 @@ const ItemDetailPage: React.VFC = () => {
         getNetworkLibrary(),
       )
 
-      var ownerOf = await contract.ownerOf(tokenId)
-      var contractOwner = await contract.owner()
+      const ownerOf = await contract.ownerOf(tokenId)
+      const contractOwner = await contract.owner()
 
       const accountIsContractOwner = contractOwner === account
 
@@ -99,9 +99,9 @@ const ItemDetailPage: React.VFC = () => {
     console.log("HERE")
 
     if (uri.includes(undefined)) return null
-    var metadata = await axios.get(uri.replace('https://ipfs.io', 'https://screensaver.mypinata.cloud'))
+    const metadata = await axios.get(uri.replace('https://ipfs.io', 'https://screensaver.mypinata.cloud'))
     console.log(metadata)
-    var itemFromContract: NFT = {
+    const itemFromContract: NFT = {
       name: "",
       description: "",
       broken: true,
@@ -135,13 +135,13 @@ const ItemDetailPage: React.VFC = () => {
     itemFromContract.creator.id = metadata.data.creator
     itemFromContract.image = metadata.data.image
 
-    if (!!metadata.data.image) {
+    if (metadata.data.image) {
       itemFromContract.thumbnail = metadata.data.image
       itemFromContract.mediaUri = metadata.data.image
       itemFromContract.thumbnail.replace('https://ipfs.io', 'https://screensaver.mypinata.cloud')  
     }
 
-    if (!!metadata.data.animation_url) {
+    if (metadata.data.animation_url) {
       itemFromContract.mediaUri = metadata.data.animation_url
     }
 
@@ -160,7 +160,7 @@ const ItemDetailPage: React.VFC = () => {
         GALLERY_ABI,
         getNetworkLibrary(),
       )
-      var tokenUri = await contract.tokenURI(tokenId)
+      const tokenUri = await contract.tokenURI(tokenId)
       console.log("HERE", tokenUri)
       setUri(tokenUri)
     } catch (error) {
@@ -185,7 +185,7 @@ const ItemDetailPage: React.VFC = () => {
     console.log("HERE WE GO", tokenId)
 
     if (!tokenId) return
-    if (!!preview) {
+    if (preview) {
       // add footer
       setUri('https://screensaver.mypinata.cloud/ipfs/' + preview.toString())
       setIsPreview(true)

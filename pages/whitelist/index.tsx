@@ -23,7 +23,7 @@ export default function Home() {
       GALLERY_ABI,
       getNetworkLibrary(),
     )
-    var whitelistStatus = await contract.isWhitelisted(account)
+    const whitelistStatus = await contract.isWhitelisted(account)
 
     console.log('whitelistStatus', whitelistStatus)
 
@@ -369,7 +369,7 @@ and advisement. Please check daily over the next month.</p>
                   cy="12"
                   r="10"
                   stroke="currentColor"
-                  stroke-width="4"
+                  strokeWidth="4"
                 ></circle>
                 <path
                   className="opacity-75"
