@@ -47,14 +47,12 @@ const GalleriesView: React.VFC = () => {
 
   return (
     <Layout>
-      <Link href={'/manageGallery'}>
-        <a className={'font-bold text-xl'}>Galleries</a>
+      <Link href={'/manageGallery'}className={'font-bold text-xl'}>Galleries
       </Link>
 
       <div className={'flex flex-col space-y-2 mt-8'}>
         {galleries.map((gallery) => (
-          <Link href={`/gallery/${gallery.title}`}>
-            <a className={'underline font-light'}>{gallery.title}</a>
+          <Link href={`/gallery/${gallery.title}`} className={'underline font-light'}>{gallery.title}
           </Link>
         ))}
       </div>

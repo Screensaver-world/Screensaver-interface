@@ -5,9 +5,7 @@ import ActiveNFTItemCard from './ActiveNFTItemCard'
 const NFTItemCard: React.FC<IProps> = (props) => {
   return (
     <Link href={`/object/${props?.tokenId}`}>
-      <a>
         <ActiveNFTItemCard {...props} />
-      </a>
     </Link>
   )
 }

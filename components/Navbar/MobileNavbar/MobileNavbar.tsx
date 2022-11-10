@@ -9,7 +9,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import logoImage from './logo.png'
+import logoImage from '../../../assets/logo.png'
 import { ethers } from 'ethers'
 import { ERC20_ABI } from '../../../constants/abis/erc20'
 import { auth } from '../../../config/firebase'
@@ -77,7 +77,7 @@ const MobileNavbar: React.FC<IProps> = () => {
 
   return (
     <>
-      <SearchModal open={open} setOpen={setOpen} />
+      {/* <SearchModal open={open} setOpen={setOpen} /> */}
 
       <div
         className={
@@ -92,23 +92,21 @@ const MobileNavbar: React.FC<IProps> = () => {
             }
           >
             <div className={'flex items-center'}>
-              <Link href={'/'}>
-                <a className="flex font-serif text-2xl text-red-400 font-bold mt-2">
+              <Link href={'/'} className="flex font-serif text-2xl text-red-400 font-bold mt-2">
                   <img
                     src={logoImage}
                     alt={'Screen Saver'}
                     className={'cursor-pointer'}
                     width={120}
                   />
-                </a>
               </Link>
             </div>
 
             <div className={'flex items-center space-x-2 md:space-x-3'}>
-              <SearchIcon
+              {/* <SearchIcon
                 onClick={() => setOpen(true)}
                 className={'h-8 w-8 text-red-300 cursor-pointer'}
-              />
+              /> */}
 
               <ConnectButton />
 
@@ -179,43 +177,35 @@ const MobileNavbar: React.FC<IProps> = () => {
 
                         {/* Mint */}
                         <Menu.Item>
-                          <Link href="/mint">
-                            <a className="block px-4 py-2 text-lg text-black font-bold hover:bg-gray-100">
+                          <Link href="/mint" className="block px-4 py-2 text-lg text-black font-bold hover:bg-gray-100">
                               🎨 Mint
-                            </a>
                           </Link>
                         </Menu.Item>
 
                         {/* Buy Matic */}
                         <Menu.Item>
-                          <Link href="https://buy.moonpay.com/">
-                            <a
+                          <Link href="https://buy.moonpay.com/" 
                               target="_blank"
                               className="block px-4 py-2 text-lg text-black font-bold hover:bg-gray-100"
                             >
                               💸 Buy
-                            </a>
                           </Link>
                         </Menu.Item>
 
                         {/* About */}
                         <Menu.Item>
-                          <Link href="https://docs.screensaver.world">
-                            <a className="block px-4 py-2 text-lg text-black font-bold hover:bg-gray-100">
+                          <Link href="https://docs.screensaver.world" className="block px-4 py-2 text-lg text-black font-bold hover:bg-gray-100">
                               🧅 Docs
-                            </a>
                           </Link>
                         </Menu.Item>
 
                         {/* Account shortlinks */}
                         <Menu.Item>
-                          <Link href="https://ssw.wtf/">
-                            <a
+                          <Link href="https://ssw.wtf/" 
                               target="_blank"
                               className="block px-4 py-2 text-lg text-black font-bold hover:bg-gray-100"
                             >
                               🚀 Shortlinks
-                            </a>
                           </Link>
                         </Menu.Item>
 
@@ -242,10 +232,8 @@ const MobileNavbar: React.FC<IProps> = () => {
                         </Menu.Item>
 
                         <Menu.Item>
-                          <Link href="/galleries">
-                            <a className="block px-4 py-2 text-lg text-white font-bold bg-green-400 hover:bg-gray-100">
+                          <Link href="/galleries" className="block px-4 py-2 text-lg text-white font-bold bg-green-400 hover:bg-gray-100">
                               Galleries BETA
-                            </a>
                           </Link>
                         </Menu.Item>
 

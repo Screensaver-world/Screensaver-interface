@@ -42,7 +42,7 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
     if (nft.broken || nft.mediaUri === null) {
       getNFTFromContract()
     } else {
-      setSafeNFT(nft)
+      setSafeNFT({ ...nft, mediaUri: nft.mediaUri.replace('https://ipfs.io', 'https://screensaver.mypinata.cloud') })
     }
   }, [nft])
 

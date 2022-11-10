@@ -106,34 +106,26 @@ const ConnectView: React.VFC<ConnectIProps> = ({ setOpen }) => {
   return (
         <div className="mt-3 flex flex-col text-center sm:mt-5 space-y-3">
           {!!account && 
-            <Link href={`/created/${account}`}>
-            <a className="inline-flex mb-3 justify-center px-6 py-3 text-xl font-medium rounded-md text-white bg-green-600">
+            <Link href={`/created/${account}`} className="inline-flex mb-3 justify-center px-6 py-3 text-xl font-medium rounded-md text-white bg-green-600">
             🎨 My Account ➡️
-            </a>
           </Link>
           }
 
           {!!account && 
-            <Link href={`/editAccount`}>
-            <a className="inline-flex mb-3 justify-center px-6 py-3 text-xl font-medium rounded-md text-white bg-red-600">
+            <Link href={`/editAccount`} className="inline-flex mb-3 justify-center px-6 py-3 text-xl font-medium rounded-md text-white bg-red-600">
             Edit Account ➡️
-            </a>
           </Link>
           }
 
           {(!!account && !!gallery?.title) && 
-            <Link href={`/gallery/${gallery?.title}`}>
-            <a className="inline-flex mb-3 justify-center px-6 py-3 text-xl font-medium rounded-md text-white bg-red-600">
+            <Link href={`/gallery/${gallery?.title}`} className="inline-flex mb-3 justify-center px-6 py-3 text-xl font-medium rounded-md text-white bg-red-600">
             Your Gallery
-            </a>
           </Link>
           }
 
 {(!!account && !gallery?.title) && 
-            <Link href={'/manageGallery'}>
-            <a className="inline-flex mb-3 justify-center px-6 py-3 text-xl font-medium rounded-md text-white bg-red-600">
+            <Link href={'/manageGallery'} className="inline-flex mb-3 justify-center px-6 py-3 text-xl font-medium rounded-md text-white bg-red-600">
             Create a Gallery
-            </a>
           </Link>
           }
 

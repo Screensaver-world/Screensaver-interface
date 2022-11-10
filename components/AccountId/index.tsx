@@ -16,8 +16,7 @@ export default function AccountId({address, link}: Props) {
 
       if (loading || !data?.username) {
         return (
-          <Link href={`https://www.screensaver.world/created/${address}`}>
-            <a className={'hover:bg-gray-800 p-2 -ml-2 rounded-md'}>{!!address && shortenAddress(address)}</a>
+          <Link href={`https://www.screensaver.world/created/${address}`} className={'hover:bg-gray-800 p-2 -ml-2 rounded-md'}>{!!address && shortenAddress(address)}
           </Link>
         )
       }
@@ -27,8 +26,7 @@ export default function AccountId({address, link}: Props) {
 
       return (
         <div className={'font-bold text-md text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-300'}>
-          <Link href={`https://www.screensaver.world/${data?.username}`}>
-            <a className={'hover:bg-gray-800 hover:from-pink-300 hover:to-pink-400 p-2 -ml-2 rounded-md font-bold text-md text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-300'}>@{data.username}</a>
+          <Link href={`https://www.screensaver.world/${data?.username}`} className={'hover:bg-gray-800 hover:from-pink-300 hover:to-pink-400 p-2 -ml-2 rounded-md font-bold text-md text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-300'}>@{data.username}
           </Link>
         </div>
       )
