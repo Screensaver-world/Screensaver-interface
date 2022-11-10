@@ -18,7 +18,7 @@
     "@google/model-viewer": "^1.6.0",
     "@headlessui/react": "^1.0.0-43d5270",
     "@heroicons/react": "^1.0.0",
-    "@netlify/plugin-nextjs": "^3.9.0",
+    "@netlify/plugin-nextjs": "^4.28.6",
     "@react-hook/window-size": "^3.0.7",
     "@stripe/react-stripe-js": "^1.4.0",
     "@stripe/stripe-js": "^1.13.2",
