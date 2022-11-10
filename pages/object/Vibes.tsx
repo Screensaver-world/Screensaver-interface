@@ -123,7 +123,7 @@ const Vibes = ({ tokenId }) => {
               <a target="_blank" href={vibesTokenUrl}>
                 <img
                   width={'25px'}
-                  src={vibesLogo}
+                  src={vibesLogo.src}
                   alt={'vibes logo'}
                 />
               </a>
