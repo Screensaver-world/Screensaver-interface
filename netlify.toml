@@ -1,0 +1,9 @@
+[build]
+  publish = "out"
+  command = "yarn run build"
+
+[template]
+  incoming-hooks = ["Contentful"]
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
