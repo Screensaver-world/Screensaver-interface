@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import ActionButton from './ActionButton'
+// import ActionButton from './ActionButton'
 import VideoPlayer from '../MediaViewer/VideoPlayer'
 import AudioPlayer from '../MediaViewer/AudioPlayer'
 
 const ImageWithActions = ({nft}) => {
   const [type, setType] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     console.log('NFT IMAGE', nft)
@@ -19,7 +20,11 @@ const ImageWithActions = ({nft}) => {
       {type === '' && <div>Loading...</div>}
       {/* { type && <iframe className={'w-full h-96 '} src={nft.animation_url}></iframe>} */}
       {type === 'image' && (
-        <img src={nft.mediaUri} className={'w-full'} />
+          <div className='pb-[100%] w-full relative'>
+          <img src={nft.mediaUri} className={'absolute top-0 left-0 w-full h-full object-cover'} style={{ display: !loading ? 'block' : 'none' }} onLoad={() => setLoading(false)} />
+
+          {loading && <div className="absolute top-0 left-0 h-full w-full bg-gray-800 animate-pulse" />}
+        </div>
       )}
       {type === 'video' && (
         <VideoPlayer fileUrl={nft.mediaUri} />

@@ -10,7 +10,7 @@ import { GALLERY_ABI } from '../constants/gallery'
 import { getNetworkLibrary } from '../connectors'
 import ReportButton from './ReportButton'
 import BurnButton from './BurnButton'
-import Vibes from '../pages/object/Vibes'
+// import Vibes from '../pages/object/Vibes'
 
 const utils = require('ethers').utils
 
@@ -182,7 +182,7 @@ const BiddingDetailView = ({ tokenId }) => {
           <strong>Id:</strong> {tokenId}
         </h2>
 
-        <Vibes tokenId={tokenId} />
+        {/* <Vibes tokenId={tokenId} /> */}
 
         <div className={'my-12'}>
           {!approvalStatus ? (

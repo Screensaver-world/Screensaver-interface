@@ -89,6 +89,7 @@ const NFTItemCard: React.FC<IProps> = ({ nft }) => {
     itemFromContract.mimeType = metadata.data.media.mimeType
     itemFromContract.tokenId = metadata.data.id
     itemFromContract.creator.id = metadata.data.creator
+    itemFromContract.creationDate = metadata.data.creationDate
 
     if (!metadata.data.animation_url) {
       itemFromContract.mediaUri = metadata.data.image

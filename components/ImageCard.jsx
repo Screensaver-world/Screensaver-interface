@@ -3,6 +3,7 @@ import VideoPlayer from './MediaViewer/VideoPlayer'
 import AudioPlayer from './MediaViewer/AudioPlayer'
 
 const ImageCard = ({ srcUrl, nft, footer, children }) => {
+  const [loading, setLoading] = useState(true);
 
   const [type, setType] = useState('')
 
@@ -15,7 +16,7 @@ const ImageCard = ({ srcUrl, nft, footer, children }) => {
   return (
     <div
       className={
-        'w-full transition duration-200 ease-in-out transform hover:-translate-y-1 bg-black hover:shadow-white border-solid border border-gray-800 text-white rounded-2xl '
+        'w-full transition duration-200 ease-in-out transform hover:scale-[101%] bg-black hover:shadow-white border-solid border border-gray-800 text-white rounded '
       }
       style={{ maxWidth: '340px', minWidth: '280px' }}
     >
@@ -23,17 +24,21 @@ const ImageCard = ({ srcUrl, nft, footer, children }) => {
         <div
           className={'flex flex-col w-full mx-auto space-y-3'}
         >
-          <div className={'rounded-t-2xl overflow-hidden h-96 bg-black'}>
+          <div className={'rounded-t overflow-hidden h-96 bg-black'}>
             {/* {type && <iframe className={'w-full h-96 '} src={nft.animation_url}></iframe>} */}
 
             {type === 'image' && (
-              <img src={srcUrl} className={'w-full h-96 object-cover'} />
+              <>
+                <img src={srcUrl} className={'w-full h-96 object-cover'} style={{ display: !loading ? 'block' : 'none' }} onLoad={() => setLoading(false)} />
+
+                {loading && <div className="h-96 w-w-full bg-gray-800 animate-pulse" />}
+              </>
             )}
             {type === 'video' && (
               <VideoPlayer fileUrl={srcUrl} controls={false} />
             )}
             {type === 'audio' && (
-              <AudioPlayer fileUrl={srcUrl} coverImageUrl={nft?.thumbnail}/>
+              <AudioPlayer fileUrl={srcUrl} coverImageUrl={nft?.thumbnail} />
             )}
 
             {(type === 'model' || type === '' || nft?.mimeType === 'application/octet-stream') && (

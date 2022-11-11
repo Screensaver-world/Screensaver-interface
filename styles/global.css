@@ -18,8 +18,6 @@ body {
 }
 
 @layer components {
-  /** Buttons */
-  /** TODO: Hover states, smaller sizes */
   .button {
     @apply px-10 py-4 text-base font-bold text-center bg-gray-700 rounded;
   }
@@ -43,6 +41,7 @@ body {
   .input {
     @apply px-5 py-4 bg-gray-800 border-none rounded;
   }
+
   .input[disabled] {
     @apply opacity-60;
   }
@@ -50,9 +49,11 @@ body {
   .round-gray-box {
     @apply px-5 py-4 bg-gray-700 rounded;
   }
+
   .round-gray-box--light {
     @apply bg-gray-600;
   }
+
   .round-gray-box--dark {
     @apply bg-gray-800;
   }

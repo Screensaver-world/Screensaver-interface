@@ -73,22 +73,22 @@ const ItemDetailPage: React.VFC = () => {
     }
   }
 
-  function getReports(tokenId) {
-    db.collection('reported')
-      .doc(tokenId)
-      .get()
-      .then((doc) => {
-        if (!doc.exists) return
-        if (!doc?.data().tickets) return
-        setReports(doc?.data().tickets)
-        if (!doc?.data().status) return
-        setReportStatus(doc?.data().status)
-      })
-  }
+  // function getReports(tokenId) {
+  //   db.collection('reported')
+  //     .doc(tokenId)
+  //     .get()
+  //     .then((doc) => {
+  //       if (!doc.exists) return
+  //       if (!doc?.data().tickets) return
+  //       setReports(doc?.data().tickets)
+  //       if (!doc?.data().status) return
+  //       setReportStatus(doc?.data().status)
+  //     })
+  // }
 
   useEffect(() => {
     if (!tokenId) return
-    getReports(tokenId)
+    // getReports(tokenId)
   }, [tokenId])
 
   useEffect(() => {
@@ -134,6 +134,7 @@ const ItemDetailPage: React.VFC = () => {
     itemFromContract.tokenId = metadata.data.id
     itemFromContract.creator.id = metadata.data.creator
     itemFromContract.image = metadata.data.image
+    itemFromContract.creationDate = metadata.data.creationDate
 
     if (metadata.data.image) {
       itemFromContract.thumbnail = metadata.data.image
