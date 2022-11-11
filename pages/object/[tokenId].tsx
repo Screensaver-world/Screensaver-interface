@@ -229,7 +229,7 @@ const ItemDetailPage: React.VFC = () => {
           <meta name="twitter:card" content="summary_large_image" />
         </Head>
 
-        <div className={'mt-12 pb-8 w-11/12 mx-auto'}>
+        <div className={'mt-2 pb-8 w-11/12 mx-auto'}>
           <div className={'md:p-3 max-w-xl mx-auto min-h-screen'}>
             <ItemDetailView metadata={metadata} hash={preview?.toString()} />
 
